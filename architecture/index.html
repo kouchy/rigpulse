@@ -1,0 +1,919 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Real-time telemetry HUD and remote power management for gaming rigs and workstations.">
+      
+      
+        <meta name="author" content="RigPulse Contributors">
+      
+      
+      
+        <link rel="prev" href="../getting-started/">
+      
+      
+        <link rel="next" href="../configuration/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Architecture - RigPulse</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="cyan" data-md-color-accent="deep-orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#architecture-design" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="RigPulse" class="md-header__button md-logo" aria-label="RigPulse" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RigPulse
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Architecture
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="cyan" data-md-color-accent="deep-orange"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="cyan" data-md-color-accent="deep-orange"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="RigPulse" class="md-nav__button md-logo" aria-label="RigPulse" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    RigPulse
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#system-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🏗️ System Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-architecture-threat-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔒 Security Architecture &amp; Threat Model
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔒 Security Architecture &amp; Threat Model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-zero-inbound-exposure-on-the-gaming-rig" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Zero Inbound Exposure on the Gaming Rig
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-key-based-cryptographic-ssh-bridge-forced-command-lockdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Key-Based Cryptographic SSH Bridge &amp; Forced Command Lockdown
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-strictly-whitelisted-operations-zero-command-injection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Strictly Whitelisted Operations (Zero Command Injection)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-role-based-access-control-rbac-hardened-auth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Role-Based Access Control (RBAC) &amp; Hardened Auth
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-csrf-protection-concurrency-action-mutex" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. CSRF Protection &amp; Concurrency Action Mutex
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-100-private-self-hosted-zero-external-telemetry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 100% Private, Self-Hosted &amp; Zero External Telemetry
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#performance-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚡ Performance Optimization
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="⚡ Performance Optimization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fast-path-in-memory-agent-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fast-Path In-Memory Agent Execution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#canvas-frame-rate-throttling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Canvas Frame Rate Throttling
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agent-protocol/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agent Protocol v1.0
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ & Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#system-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🏗️ System Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-architecture-threat-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔒 Security Architecture &amp; Threat Model
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔒 Security Architecture &amp; Threat Model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-zero-inbound-exposure-on-the-gaming-rig" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Zero Inbound Exposure on the Gaming Rig
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-key-based-cryptographic-ssh-bridge-forced-command-lockdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Key-Based Cryptographic SSH Bridge &amp; Forced Command Lockdown
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-strictly-whitelisted-operations-zero-command-injection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Strictly Whitelisted Operations (Zero Command Injection)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-role-based-access-control-rbac-hardened-auth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Role-Based Access Control (RBAC) &amp; Hardened Auth
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-csrf-protection-concurrency-action-mutex" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. CSRF Protection &amp; Concurrency Action Mutex
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-100-private-self-hosted-zero-external-telemetry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 100% Private, Self-Hosted &amp; Zero External Telemetry
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#performance-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚡ Performance Optimization
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="⚡ Performance Optimization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fast-path-in-memory-agent-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fast-Path In-Memory Agent Execution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#canvas-frame-rate-throttling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Canvas Frame Rate Throttling
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="architecture-design">Architecture &amp; Design</h1>
+<p>RigPulse is built upon a distributed, energy-conscious client-server-agent architecture designed to minimize background power consumption and network overhead.</p>
+<hr />
+<h2 id="system-overview">🏗️ System Overview</h2>
+<pre class="mermaid"><code>graph TB
+    subgraph Client ["Client Device (Browser)"]
+        UI["RigPulse HUD (Vanilla JS + CSS)"]
+        Canvas["2D Canvas Engine (HiDPI 30-120 FPS)"]
+    end
+
+    subgraph Companion ["24/7 Companion Server (Raspberry Pi / Linux)"]
+        Router["php/Router.php (PHP 7.0+)"]
+        Auth["php/Auth.php (Session &amp; CSRF)"]
+        Wol["php/Wol.php (UDP Broadcast)"]
+        Ssh["php/SshBridge.php (SSH2 Client)"]
+        Sun["php/SunshineService.php (TCP Port Probes)"]
+        Log["php/ActionLogger.php (data/actions.json)"]
+    end
+
+    subgraph Rig ["Target Gaming Rig (Windows 10/11 or Linux / SteamOS / Bazzite)"]
+        Agent["Host Agent (rigpulse_agent.ps1 or rigpulse_agent.sh)"]
+        NIC["Physical Ethernet NIC (WOL Ready)"]
+        Sensors["Sensors: WMI &amp; PerfCounters (Win) / sysfs &amp; procfs (Linux)"]
+        GPU["GPU Subsystem: nvidia-smi / amdgpu sysfs / xpu-smi"]
+        Sunshine["Sunshine Game Streaming Server"]
+    end
+
+    UI --&gt;|"HTTPS JSON API (?action=...)"| Router
+    Router --&gt; Auth
+    Router --&gt; Wol
+    Router --&gt; Ssh
+    Router --&gt; Sun
+    Router --&gt; Log
+
+    Wol --&gt;|"Layer 2 Magic Packet (UDP 9 Broadcast)"| NIC
+    Ssh --&gt;|"OpenSSH Connection (Port 22)"| Agent
+    Sun --&gt;|"TCP Handshake (48010, 47984, 47989, 47990)"| Sunshine
+
+    Agent --&gt; Sensors
+    Agent --&gt; GPU
+    Agent --&gt; Sunshine</code></pre>
+<hr />
+<h2 id="security-architecture-threat-model">🔒 Security Architecture &amp; Threat Model</h2>
+<p>When managing high-value gaming hardware and remote power states, security cannot be an afterthought. RigPulse is engineered from the ground up around strict defense-in-depth principles:</p>
+<h3 id="1-zero-inbound-exposure-on-the-gaming-rig">1. Zero Inbound Exposure on the Gaming Rig</h3>
+<ul>
+<li><strong>No Web Server on the Host</strong>: Your gaming PC never runs a public web server, PHP engine, or management daemon exposed to the Internet.</li>
+<li><strong>Local-Only Communication</strong>: The target PC only listens for SSH on your private local network (LAN).</li>
+<li><strong>Companion Isolation</strong>: Only the lightweight companion server (e.g., a Raspberry Pi) handles web traffic, isolating your primary gaming workstation behind your local firewall.</li>
+</ul>
+<h3 id="2-key-based-cryptographic-ssh-bridge-forced-command-lockdown">2. Key-Based Cryptographic SSH Bridge &amp; Forced Command Lockdown</h3>
+<ul>
+<li><strong>No Passwords on the Wire</strong>: RigPulse authenticates to the host machine strictly using modern <strong>Ed25519 (or RSA-4096)</strong> public-key cryptography. No host credentials or user account passwords (Windows or Linux) are ever stored on disk or sent across the network.</li>
+<li><strong>Forced Command Lockdown</strong>: The target's <code>authorized_keys</code> can be strictly locked down to only execute the agent script:</li>
+</ul>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Windows 10 / 11</label><label for="__tabbed_1_2">Linux (SteamOS / Bazzite / Ubuntu / Arch)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>command="powershell.exe -ExecutionPolicy Bypass -NonInteractive -File C:\ProgramData\ssh\rigpulse_agent.ps1",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty ssh-ed25519 &lt;PUBLIC_KEY&gt; rigpulse-bridge
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>command="/usr/local/bin/rigpulse_agent.sh",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty ssh-ed25519 &lt;PUBLIC_KEY&gt; rigpulse-bridge
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>Even if the companion server's SSH key were somehow compromised, an attacker cannot open an interactive shell, forward ports, or execute unauthorized binaries.</p>
+<h3 id="3-strictly-whitelisted-operations-zero-command-injection">3. Strictly Whitelisted Operations (Zero Command Injection)</h3>
+<ul>
+<li>The web application <strong>never</strong> passes arbitrary user commands or shell strings to SSH.</li>
+<li>Every API endpoint is mapped to hardcoded, static internal actions (<code>sleep</code>, <code>shutdown</code>, <code>reboot</code>, <code>sunshine_ctl</code>, <code>sysinfo</code>, <code>diagnostics</code>).</li>
+<li>All process parameters are strictly sanitized and escaped with PHP's native <code>escapeshellarg()</code>.</li>
+</ul>
+<h3 id="4-role-based-access-control-rbac-hardened-auth">4. Role-Based Access Control (RBAC) &amp; Hardened Auth</h3>
+<ul>
+<li><strong>Gamer Role</strong>: Allows waking the rig (WOL), putting it to sleep (S3), and checking Sunshine stream availability—ideal for family members or shared handheld gaming devices (Steam Deck, ROG Ally) and living room TVs.</li>
+<li><strong>Admin Role</strong>: Unlocks full hardware diagnostic telemetry (CPU/GPU load, temps, power, fan speeds, active processes), Sunshine service restarts, and OS reboots.</li>
+<li><strong>BCrypt Password Storage</strong>: Passwords are never stored in plaintext; they are hashed using <strong>BCrypt</strong> with an adaptive cost factor of 12.</li>
+<li><strong>Brute-Force Lockout</strong>: Automatic 5-minute sliding window lockout after 5 consecutive failed authentication attempts.</li>
+<li><strong>Hardened Sessions</strong>: Session cookies are configured with <code>HttpOnly</code>, <code>SameSite=Strict</code>, and <code>Secure</code> flags when served over HTTPS.</li>
+</ul>
+<h3 id="5-csrf-protection-concurrency-action-mutex">5. CSRF Protection &amp; Concurrency Action Mutex</h3>
+<ul>
+<li><strong>Cryptographic CSRF Tokens</strong>: All state-changing operations (<code>POST</code>) mandate a session-tied <code>X-CSRF-Token</code> validated using constant-time <code>hash_equals()</code>.</li>
+<li><strong>Atomic Action Mutex</strong>: A 30-second atomic lock prevents conflicting simultaneous power operations (e.g., waking and sleeping at the exact same moment from two different devices). Conflicting power requests from other client IPs return HTTP <code>409 Conflict</code>, preventing accidental machine thrashing.</li>
+<li><strong>Tamper-Evident Audit Log</strong>: Every power command and service toggle is logged with timestamp, client IP, and role in <code>web/data/actions.json</code>.</li>
+</ul>
+<h3 id="6-100-private-self-hosted-zero-external-telemetry">6. 100% Private, Self-Hosted &amp; Zero External Telemetry</h3>
+<ul>
+<li><strong>Zero Third-Party Cloud Dependencies</strong>: RigPulse operates completely offline on your local network or across your personal VPN (WireGuard, Tailscale).</li>
+<li><strong>Zero Tracking</strong>: No Google Analytics, no tracking pixels, no telemetry phone-home, and no external CDN dependencies.</li>
+<li><strong>Hardware Telemetry Stays on Your LAN</strong>: All hardware vitals (CPU/GPU temps, wattage, processes) are processed purely in-memory and streamed directly to your browser without intermediate third-party servers.</li>
+</ul>
+<hr />
+<h2 id="performance-optimization">⚡ Performance Optimization</h2>
+<h3 id="fast-path-in-memory-agent-execution">Fast-Path In-Memory Agent Execution</h3>
+<p>Telemetry collection is engineered for minimal sampling latency and zero background CPU impact on both supported platforms:</p>
+<ul>
+<li><strong>Windows Fast-Path (&lt;80ms)</strong>:</li>
+<li>Traditional remote WMI queries take 700ms to 1200ms. RigPulse bypasses WMI overhead by reading pre-cached instances of <code>[System.Diagnostics.PerformanceCounter]</code> and using tokenized structured <code>nvidia-smi</code> queries.</li>
+<li>Formats JSON payloads entirely in-memory, dropping round-trip sampling time from ~800ms down to <strong>&lt;80ms</strong>.</li>
+<li><strong>Linux Fast-Path (&lt;30ms)</strong>:</li>
+<li>Directly reads raw kernel interfaces (<code>/sys/class/drm/card*/device/</code>, <code>/proc/stat</code>, <code>/proc/meminfo</code>, <code>/sys/class/hwmon</code>) with zero subprocess fork overhead.</li>
+<li>Zero-config AMD Radeon monitoring without requiring the massive 15 GB ROCm SDK.</li>
+<li>Achieves ultra-low round-trip latency of <strong>&lt;30ms</strong>.</li>
+</ul>
+<h3 id="canvas-frame-rate-throttling">Canvas Frame Rate Throttling</h3>
+<ul>
+<li><strong>Eco Mode (Universal default)</strong>: Smooth ~30 FPS capped rendering with soft neon glow, keeping client CPU/GPU utilization under 1% on laptops, handhelds, and phones.</li>
+<li><strong>Light &amp; UltraLight Mode (Battery Saver)</strong>: Cancels continuous <code>requestAnimationFrame</code> loops entirely (0 FPS continuous overhead); charts settle instantly upon data arrival.</li>
+<li><strong>Heavy Mode (Enthusiast)</strong>: Uncapped 120 FPS render loop with dynamic glowing neon drop-shadows and real-time crosshair tracking.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "content.code.copy", "content.code.annotate"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

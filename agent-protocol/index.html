@@ -1,0 +1,1173 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Real-time telemetry HUD and remote power management for gaming rigs and workstations.">
+      
+      
+        <meta name="author" content="RigPulse Contributors">
+      
+      
+      
+        <link rel="prev" href="../configuration/">
+      
+      
+        <link rel="next" href="../troubleshooting/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Agent Protocol v1.0 - RigPulse</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="cyan" data-md-color-accent="deep-orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#rigpulse-agent-protocol-v10" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="RigPulse" class="md-header__button md-logo" aria-label="RigPulse" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RigPulse
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Agent Protocol v1.0
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="cyan" data-md-color-accent="deep-orange"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="cyan" data-md-color-accent="deep-orange"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="RigPulse" class="md-nav__button md-logo" aria-label="RigPulse" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    RigPulse
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agent Protocol v1.0
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agent Protocol v1.0
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-transport-invocation-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Transport &amp; Invocation Contract
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-agent-subcommand-tiers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Agent Subcommand Tiers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Agent Subcommand Tiers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tier-1-minimum-viable-agent-essential" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tier 1: Minimum Viable Agent (Essential)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tier-2-extended-host-management-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tier 2: Extended Host Management (Recommended)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tier-3-streaming-service-controls-sunshine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tier 3: Streaming Service Controls (Sunshine)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-capabilities-discovery-schema-capabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Capabilities Discovery Schema (capabilities)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-mandatory-core-vs-optional-json-fields-sysinfo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Mandatory Core vs. Optional JSON Fields (sysinfo)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Mandatory Core vs. Optional JSON Fields (sysinfo)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mandatory-core-metrics-3-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mandatory Core Metrics (3 fields)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-graceful-ui-degradation-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Graceful UI Degradation Matrix
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-telemetry-schemas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Telemetry Schemas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Telemetry Schemas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sysinfo-response-schema-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sysinfo Response Schema (Summary)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagnostics-response-schema-diagnostic-hud" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        diagnostics Response Schema (Diagnostic HUD)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-official-host-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Official Host Agents
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ & Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-transport-invocation-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Transport &amp; Invocation Contract
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-agent-subcommand-tiers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Agent Subcommand Tiers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Agent Subcommand Tiers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tier-1-minimum-viable-agent-essential" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tier 1: Minimum Viable Agent (Essential)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tier-2-extended-host-management-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tier 2: Extended Host Management (Recommended)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tier-3-streaming-service-controls-sunshine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tier 3: Streaming Service Controls (Sunshine)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-capabilities-discovery-schema-capabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Capabilities Discovery Schema (capabilities)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-mandatory-core-vs-optional-json-fields-sysinfo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Mandatory Core vs. Optional JSON Fields (sysinfo)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Mandatory Core vs. Optional JSON Fields (sysinfo)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mandatory-core-metrics-3-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mandatory Core Metrics (3 fields)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-graceful-ui-degradation-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Graceful UI Degradation Matrix
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-telemetry-schemas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Telemetry Schemas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Telemetry Schemas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sysinfo-response-schema-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sysinfo Response Schema (Summary)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagnostics-response-schema-diagnostic-hud" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        diagnostics Response Schema (Diagnostic HUD)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-official-host-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Official Host Agents
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="rigpulse-agent-protocol-v10">RigPulse Agent Protocol v1.0</h1>
+<p>The <strong>RigPulse Agent Protocol</strong> is an open, versioned specification defining how remote host agents communicate hardware metrics and power actions to the RigPulse web dashboard.</p>
+<p>Any operating system (Windows, Linux, FreeBSD, macOS) or hardware platform (NVIDIA, AMD Radeon, Intel Arc) can be monitored by RigPulse simply by implementing an agent script that adheres to this protocol.</p>
+<hr />
+<h2 id="1-transport-invocation-contract">1. Transport &amp; Invocation Contract</h2>
+<ul>
+<li><strong>Transport</strong>: Standard SSH (OpenSSH).</li>
+<li><strong>Execution</strong>: The server executes the agent with a single argument specifying the action:
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>ssh<span class="w"> </span>-i<span class="w"> </span>&lt;key&gt;<span class="w"> </span>&lt;user&gt;@&lt;host&gt;<span class="w"> </span>&lt;action&gt;
+</code></pre></div></li>
+<li><strong>Output Format</strong>: Clean UTF-8 JSON printed to <code>STDOUT</code>. Diagnostics and errors may be written to <code>STDERR</code>.</li>
+<li><strong>Exit Code</strong>: <code>0</code> on success, non-zero on failure.</li>
+</ul>
+<hr />
+<h2 id="2-agent-subcommand-tiers">2. Agent Subcommand Tiers</h2>
+<p>Protocol v1.0 organizes subcommands into <strong>three progressive tiers</strong>. An agent is not required to implement all commands—RigPulse gracefully adapts and hides unsupported features:</p>
+<h3 id="tier-1-minimum-viable-agent-essential">Tier 1: Minimum Viable Agent (Essential)</h3>
+<p>Only <strong>two commands</strong> are strictly required to create a functional RigPulse agent:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Command</th>
+<th style="text-align: left;">Output</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>sysinfo</code></td>
+<td style="text-align: left;">JSON</td>
+<td style="text-align: left;">Fast lightweight metrics for background polling (CPU &amp; RAM).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>shutdown</code></td>
+<td style="text-align: left;">String</td>
+<td style="text-align: left;">Initiates OS shutdown when the user triggers power-off.</td>
+</tr>
+</tbody>
+</table>
+<p><em>(A simple 20-line script implementing only <code>sysinfo</code> and <code>shutdown</code> is already a fully working RigPulse agent).</em></p>
+<h3 id="tier-2-extended-host-management-recommended">Tier 2: Extended Host Management (Recommended)</h3>
+<p>Adds sleep suspend, uptime display, feature discovery, and deep diagnostics:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Command</th>
+<th style="text-align: left;">Output</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">UI Behavior if Omitted</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>sleep</code></td>
+<td style="text-align: left;">String</td>
+<td style="text-align: left;">Initiates ACPI S3 sleep suspend.</td>
+<td style="text-align: left;">Clicking SLEEP displays an error; host remains awake.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>uptime</code></td>
+<td style="text-align: left;">String</td>
+<td style="text-align: left;">Human-readable uptime (e.g. <code>2d 5h 32m</code>).</td>
+<td style="text-align: left;">Uptime pill badge is automatically hidden from UI.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>capabilities</code></td>
+<td style="text-align: left;">JSON</td>
+<td style="text-align: left;">Discovers supported features and hardware sensors.</td>
+<td style="text-align: left;">Frontend uses standard defaults and degradation rules.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>diagnostics</code></td>
+<td style="text-align: left;">JSON</td>
+<td style="text-align: left;">Deep hardware metrics and process listing.</td>
+<td style="text-align: left;">Diagnostics modal displays "Telemetry unavailable".</td>
+</tr>
+</tbody>
+</table>
+<h3 id="tier-3-streaming-service-controls-sunshine">Tier 3: Streaming Service Controls (Sunshine)</h3>
+<p>Only needed if the host runs Sunshine and Sunshine controls are enabled in <code>config.php</code>:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Command</th>
+<th style="text-align: left;">Output</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">UI Behavior if Omitted</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>sunshine-start</code></td>
+<td style="text-align: left;">String</td>
+<td style="text-align: left;">Starts Sunshine streaming service.</td>
+<td style="text-align: left;">Clicking Start displays execution error.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>sunshine-stop</code></td>
+<td style="text-align: left;">String</td>
+<td style="text-align: left;">Stops Sunshine streaming service.</td>
+<td style="text-align: left;">Clicking Stop displays execution error.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>sunshine-restart</code></td>
+<td style="text-align: left;">String</td>
+<td style="text-align: left;">Restarts Sunshine streaming service.</td>
+<td style="text-align: left;">Clicking Restart displays execution error.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-capabilities-discovery-schema-capabilities">3. Capabilities Discovery Schema (<code>capabilities</code>)</h2>
+<p>When invoked with <code>capabilities</code>, the agent returns a JSON payload describing its features and declaring which subcommands it actually supports:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">"protocol_version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0"</span><span class="p">,</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">"os"</span><span class="p">:</span><span class="w"> </span><span class="s2">"linux"</span><span class="p">,</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">"supported_commands"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="s2">"shutdown"</span><span class="p">,</span><span class="w"> </span><span class="s2">"sleep"</span><span class="p">,</span><span class="w"> </span><span class="s2">"uptime"</span><span class="p">,</span><span class="w"> </span><span class="s2">"sysinfo"</span><span class="p">,</span><span class="w"> </span><span class="s2">"diagnostics"</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="s2">"capabilities"</span><span class="p">,</span><span class="w"> </span><span class="s2">"sunshine-start"</span><span class="p">,</span><span class="w"> </span><span class="s2">"sunshine-stop"</span><span class="p">,</span><span class="w"> </span><span class="s2">"sunshine-restart"</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span><span class="p">],</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">  </span><span class="nt">"features"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="nt">"gpu"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">    </span><span class="nt">"gpu_vendor"</span><span class="p">:</span><span class="w"> </span><span class="s2">"amd"</span><span class="p">,</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">    </span><span class="nt">"cpu_power"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="nt">"cpu_temp"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">    </span><span class="nt">"disk_io"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">    </span><span class="nt">"net_io"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">    </span><span class="nt">"sunshine"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">    </span><span class="nt">"foreground_app"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">    </span><span class="nt">"os_updates"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="p">}</span>
+</code></pre></div>
+<hr />
+<h2 id="4-mandatory-core-vs-optional-json-fields-sysinfo">4. Mandatory Core vs. Optional JSON Fields (<code>sysinfo</code>)</h2>
+<p>Within the JSON payload returned by <code>sysinfo</code>, RigPulse minimizes requirements so that any platform or virtual machine can be monitored:</p>
+<h3 id="mandatory-core-metrics-3-fields">Mandatory Core Metrics (3 fields)</h3>
+<p>Only <strong>three data fields</strong> are strictly mandatory for basic operation:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Field</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>cpu</code> / <code>cpu_load</code></td>
+<td style="text-align: left;"><code>number</code></td>
+<td style="text-align: left;">CPU overall load percentage (0–100).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>ram_used</code></td>
+<td style="text-align: left;"><code>number</code></td>
+<td style="text-align: left;">Used RAM in gigabytes (e.g. <code>14.2</code>).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>ram_total</code></td>
+<td style="text-align: left;"><code>number</code></td>
+<td style="text-align: left;">Total installed RAM in gigabytes (e.g. <code>32.0</code>).</td>
+</tr>
+</tbody>
+</table>
+<p>All other fields (<code>gpu_load</code>, <code>gpu_temp</code>, <code>gpu_power</code>, <code>cpu_temp</code>, <code>cpu_power</code>, <code>cpu_freq</code>, <code>cpu_fan</code>, etc.) are <strong>optional</strong>. If omitted or <code>null</code>, the dashboard gracefully hides the corresponding badges or displays <code>N/A</code>.</p>
+<hr />
+<h2 id="5-graceful-ui-degradation-matrix">5. Graceful UI Degradation Matrix</h2>
+<p>If optional sensors are unavailable on a particular machine (e.g. no dedicated GPU, missing RAPL driver, or read-only filesystem), RigPulse degrades gracefully:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Metric Field</th>
+<th style="text-align: left;">Missing / Null State</th>
+<th style="text-align: left;">Frontend UI Adaptation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>cpu_temp</code></td>
+<td style="text-align: left;"><code>null</code> or absent</td>
+<td style="text-align: left;">The CPU temperature label is hidden. If the secondary metric is toggled to <code>TEMP</code>, only available temperatures render.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>cpu_fan</code></td>
+<td style="text-align: left;"><code>null</code> or absent</td>
+<td style="text-align: left;">The CPU fan speed badge and fan legend pill are hidden.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>cpu_power</code></td>
+<td style="text-align: left;"><code>null</code> or <code>0</code></td>
+<td style="text-align: left;">The CPU power pill is hidden. The power curve flattens to 0W or hides cleanly.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>cpu_freq</code></td>
+<td style="text-align: left;"><code>null</code> or absent</td>
+<td style="text-align: left;">Frequency badge is hidden from the CPU card.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>gpu_load</code> / <code>gpu</code></td>
+<td style="text-align: left;"><code>null</code> or <code>false</code></td>
+<td style="text-align: left;">GPU card displays <code>N/A</code>. GPU chart collapses or displays "No discrete GPU detected".</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>gpu_temp</code> / <code>gpu_power</code></td>
+<td style="text-align: left;"><code>null</code> or absent</td>
+<td style="text-align: left;">GPU metric pill and corresponding secondary chart curves are omitted.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>gpu_fan</code> / <code>gpu_fan_cur</code> / <code>gpu_fan_max</code></td>
+<td style="text-align: left;"><code>null</code> or absent</td>
+<td style="text-align: left;">GPU fan indicator displays <code>N/A</code> or hides. RPM details are omitted from hover/click.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>gpu_enc</code></td>
+<td style="text-align: left;"><code>null</code> or absent</td>
+<td style="text-align: left;">Encoder percentage indicator displays <code>N/A</code> or <code>—</code>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>disks</code></td>
+<td style="text-align: left;">empty array <code>[]</code></td>
+<td style="text-align: left;">Disk storage list is hidden.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>disk_read_mb</code> / <code>write</code></td>
+<td style="text-align: left;"><code>null</code> or absent</td>
+<td style="text-align: left;">Disk throughput text is hidden. Storage history chart stays at 0 MB/s.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>net_recv_mb</code> / <code>sent</code></td>
+<td style="text-align: left;"><code>null</code> or absent</td>
+<td style="text-align: left;">Network throughput text is hidden. Network history chart stays at 0 MB/s.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>top_procs</code></td>
+<td style="text-align: left;">empty array <code>[]</code></td>
+<td style="text-align: left;">The top process table displays <em>"Process monitoring unavailable"</em>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>sunshine</code></td>
+<td style="text-align: left;"><code>false</code> / absent</td>
+<td style="text-align: left;">Sunshine status bar is hidden entirely from the main dashboard.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="6-telemetry-schemas">6. Telemetry Schemas</h2>
+<h3 id="sysinfo-response-schema-summary"><code>sysinfo</code> Response Schema (Summary)</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">"cpu"</span><span class="p">:</span><span class="w"> </span><span class="mi">18</span><span class="p">,</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nt">"cpu_freq"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4.85"</span><span class="p">,</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">"cpu_temp"</span><span class="p">:</span><span class="w"> </span><span class="mi">48</span><span class="p">,</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span><span class="nt">"cpu_fan"</span><span class="p">:</span><span class="w"> </span><span class="mi">40</span><span class="p">,</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span><span class="nt">"cpu_fan_cur"</span><span class="p">:</span><span class="w"> </span><span class="mi">1250</span><span class="p">,</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">  </span><span class="nt">"cpu_fan_max"</span><span class="p">:</span><span class="w"> </span><span class="mi">2500</span><span class="p">,</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">  </span><span class="nt">"cpu_power"</span><span class="p">:</span><span class="w"> </span><span class="mf">42.5</span><span class="p">,</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">  </span><span class="nt">"ram_used"</span><span class="p">:</span><span class="w"> </span><span class="mf">14.2</span><span class="p">,</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">  </span><span class="nt">"ram_total"</span><span class="p">:</span><span class="w"> </span><span class="mf">31.9</span><span class="p">,</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">  </span><span class="nt">"ram_pct"</span><span class="p">:</span><span class="w"> </span><span class="mi">45</span><span class="p">,</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">  </span><span class="nt">"gpu_load"</span><span class="p">:</span><span class="w"> </span><span class="mi">35</span><span class="p">,</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">  </span><span class="nt">"gpu_mem_used"</span><span class="p">:</span><span class="w"> </span><span class="mi">3450</span><span class="p">,</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">  </span><span class="nt">"gpu_mem_total"</span><span class="p">:</span><span class="w"> </span><span class="mi">12288</span><span class="p">,</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">  </span><span class="nt">"gpu_fan"</span><span class="p">:</span><span class="w"> </span><span class="mi">45</span><span class="p">,</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">  </span><span class="nt">"gpu_fan_cur"</span><span class="p">:</span><span class="w"> </span><span class="mi">1150</span><span class="p">,</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">  </span><span class="nt">"gpu_fan_max"</span><span class="p">:</span><span class="w"> </span><span class="mi">2200</span><span class="p">,</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">  </span><span class="nt">"gpu_temp"</span><span class="p">:</span><span class="w"> </span><span class="mi">52</span><span class="p">,</span>
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="w">  </span><span class="nt">"gpu_power"</span><span class="p">:</span><span class="w"> </span><span class="mi">115</span>
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="diagnostics-response-schema-diagnostic-hud"><code>diagnostics</code> Response Schema (Diagnostic HUD)</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">"cpu_load"</span><span class="p">:</span><span class="w"> </span><span class="mi">22</span><span class="p">,</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nt">"cpu_freq"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4.85"</span><span class="p">,</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nt">"cpu_temp"</span><span class="p">:</span><span class="w"> </span><span class="mi">51</span><span class="p">,</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="nt">"cpu_fan"</span><span class="p">:</span><span class="w"> </span><span class="mi">40</span><span class="p">,</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="nt">"cpu_fan_cur"</span><span class="p">:</span><span class="w"> </span><span class="mi">1250</span><span class="p">,</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">  </span><span class="nt">"cpu_fan_max"</span><span class="p">:</span><span class="w"> </span><span class="mi">2500</span><span class="p">,</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">  </span><span class="nt">"cpu_power"</span><span class="p">:</span><span class="w"> </span><span class="mf">54.2</span><span class="p">,</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">  </span><span class="nt">"ram_used"</span><span class="p">:</span><span class="w"> </span><span class="s2">"14.6"</span><span class="p">,</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">  </span><span class="nt">"ram_total"</span><span class="p">:</span><span class="w"> </span><span class="s2">"31.9"</span><span class="p">,</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">  </span><span class="nt">"ram_pct"</span><span class="p">:</span><span class="w"> </span><span class="mi">46</span><span class="p">,</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">  </span><span class="nt">"gpu_load"</span><span class="p">:</span><span class="w"> </span><span class="s2">"42"</span><span class="p">,</span>
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">  </span><span class="nt">"gpu_mem_used"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4200"</span><span class="p">,</span>
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">  </span><span class="nt">"gpu_mem_total"</span><span class="p">:</span><span class="w"> </span><span class="s2">"12288"</span><span class="p">,</span>
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">  </span><span class="nt">"gpu_enc"</span><span class="p">:</span><span class="w"> </span><span class="s2">"12"</span><span class="p">,</span>
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">  </span><span class="nt">"gpu_power"</span><span class="p">:</span><span class="w"> </span><span class="s2">"135"</span><span class="p">,</span>
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="w">  </span><span class="nt">"gpu_power_limit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"285"</span><span class="p">,</span>
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="w">  </span><span class="nt">"gpu_fan"</span><span class="p">:</span><span class="w"> </span><span class="s2">"45"</span><span class="p">,</span>
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="w">  </span><span class="nt">"gpu_fan_cur"</span><span class="p">:</span><span class="w"> </span><span class="mi">1150</span><span class="p">,</span>
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="w">  </span><span class="nt">"gpu_fan_max"</span><span class="p">:</span><span class="w"> </span><span class="mi">2200</span><span class="p">,</span>
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="w">  </span><span class="nt">"gpu_temp"</span><span class="p">:</span><span class="w"> </span><span class="s2">"55"</span><span class="p">,</span>
+<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="w">  </span><span class="nt">"disk_read_mb"</span><span class="p">:</span><span class="w"> </span><span class="s2">"12.4"</span><span class="p">,</span>
+<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a><span class="w">  </span><span class="nt">"disk_write_mb"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4.8"</span><span class="p">,</span>
+<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a><span class="w">  </span><span class="nt">"disks"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">"drive"</span><span class="p">:</span><span class="w"> </span><span class="s2">"C:"</span><span class="p">,</span><span class="w"> </span><span class="nt">"label"</span><span class="p">:</span><span class="w"> </span><span class="s2">"System"</span><span class="p">,</span><span class="w"> </span><span class="nt">"used_gb"</span><span class="p">:</span><span class="w"> </span><span class="mi">320</span><span class="p">,</span><span class="w"> </span><span class="nt">"total_gb"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="nt">"pct"</span><span class="p">:</span><span class="w"> </span><span class="mi">32</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a><span class="w">  </span><span class="p">],</span>
+<a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a><span class="w">  </span><span class="nt">"net_recv_mb"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4.2"</span><span class="p">,</span>
+<a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a><span class="w">  </span><span class="nt">"net_sent_mb"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.8"</span><span class="p">,</span>
+<a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a><span class="w">  </span><span class="nt">"top_procs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">"pid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4812"</span><span class="p">,</span><span class="w"> </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cyberpunk2077.exe"</span><span class="p">,</span><span class="w"> </span><span class="nt">"cpu"</span><span class="p">:</span><span class="w"> </span><span class="mf">16.4</span><span class="p">,</span><span class="w"> </span><span class="nt">"mem"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6.2 GB"</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">"pid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1044"</span><span class="p">,</span><span class="w"> </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sunshine.exe"</span><span class="p">,</span><span class="w"> </span><span class="nt">"cpu"</span><span class="p">:</span><span class="w"> </span><span class="mf">3.8</span><span class="p">,</span><span class="w"> </span><span class="nt">"mem"</span><span class="p">:</span><span class="w"> </span><span class="s2">"180 MB"</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a><span class="w">  </span><span class="p">]</span>
+<a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a><span class="p">}</span>
+</code></pre></div>
+<hr />
+<h2 id="7-official-host-agents">7. Official Host Agents</h2>
+<p>RigPulse includes two official, production-ready host agent implementations:</p>
+<ul>
+<li><strong>Windows 10 / 11 Agent</strong> (<code>backends/windows/rigpulse_agent.ps1</code>): Compatible with Windows 10 &amp; 11 (PowerShell 5.1 &amp; Core 7+). Features tri-vendor GPU telemetry (NVIDIA <code>nvidia-smi</code>, AMD Radeon &amp; Intel Arc via native WDDM Performance Counters and LibreHardwareMonitor WMI). See <code>backends/windows/README.md</code> for installation and OpenSSH configuration.</li>
+<li><strong>Linux Agent</strong> (<code>backends/linux/rigpulse_agent.sh</code>): Compatible with <strong>Bazzite, ChimeraOS, SteamOS, Arch Linux, Ubuntu, and Debian</strong>. Features zero-dependency tri-vendor GPU telemetry (NVIDIA <code>nvidia-smi</code>, AMD Radeon kernel sysfs / <code>rocm-smi</code>, and Intel Arc <code>xe</code> / <code>i915</code> / <code>xpu-smi</code>). See <code>backends/linux/README.md</code> for sudoers and OpenSSH setup.</li>
+</ul>
+<p>Creating a custom agent in Python, Go, or Rust is as simple as handling the subcommands for your target tier (Tier 1 minimal, Tier 2 extended, or Tier 3 streaming) and printing the JSON schemas to <code>STDOUT</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "content.code.copy", "content.code.annotate"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

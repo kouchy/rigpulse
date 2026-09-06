@@ -1,0 +1,1756 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Real-time telemetry HUD and remote power management for gaming rigs and workstations.">
+      
+      
+        <meta name="author" content="RigPulse Contributors">
+      
+      
+      
+        <link rel="prev" href="../agent-protocol/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>FAQ & Troubleshooting - RigPulse</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="cyan" data-md-color-accent="deep-orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#faq-troubleshooting" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="RigPulse" class="md-header__button md-logo" aria-label="RigPulse" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RigPulse
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              FAQ & Troubleshooting
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="cyan" data-md-color-accent="deep-orange"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="cyan" data-md-color-accent="deep-orange"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="RigPulse" class="md-nav__button md-logo" aria-label="RigPulse" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    RigPulse
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agent-protocol/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agent Protocol v1.0
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ & Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ & Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#wake-on-lan-wol-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚡ Wake-on-LAN (WOL) Issues
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="⚡ Wake-on-LAN (WOL) Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-the-pc-wakes-up-right-after-being-put-to-sleep-but-fails-to-wake-after-a-few-hours-or-cold-shutdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. The PC wakes up right after being put to sleep, but fails to wake after a few hours or cold shutdown
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. The PC wakes up right after being put to sleep, but fails to wake after a few hours or cold shutdown">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cause-a-windows-fast-startup-hybrid-sleep-cuts-power-to-the-nic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cause A: Windows "Fast Startup" (Hybrid Sleep) cuts power to the NIC
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cause-b-motherboard-erp-eup-energy-saving-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cause B: Motherboard ErP / EuP Energy Saving Mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cause-c-windows-network-adapter-energy-efficient-ethernet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cause C: Windows Network Adapter Energy Efficient Ethernet
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cause-d-linux-networkmanager-or-tlp-power-saving-disables-wol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cause D: Linux NetworkManager or TLP Power-Saving Disables WOL
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-can-i-wake-my-pc-over-wi-fi-wowlan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Can I wake my PC over Wi-Fi (WoWLAN)?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-can-i-send-wake-on-lan-packets-over-the-internet-or-across-subnets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Can I send Wake-on-LAN packets over the Internet or across subnets?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#openssh-agent-troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔒 OpenSSH &amp; Agent Troubleshooting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔒 OpenSSH &amp; Agent Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-permission-denied-publickey-when-testing-ssh-from-the-companion-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Permission denied (publickey) when testing SSH from the companion server
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Permission denied (publickey) when testing SSH from the companion server">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cause-a-openssh-permissions-on-windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cause A: OpenSSH permissions on Windows
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cause-b-wrong-authorized_keys-file-used-on-windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cause B: Wrong authorized_keys file used on Windows
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cause-c-openssh-directory-and-file-permissions-on-linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cause C: OpenSSH directory and file permissions on Linux
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-rigpulse-displays-ssh-starting-and-doesnt-update-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. RigPulse displays "SSH starting..." and doesn't update metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-linux-sudoers-permission-denied-for-sleep-poweroff-or-sunshine-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Linux sudoers permission denied for Sleep, Poweroff, or Sunshine controls
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Linux sudoers permission denied for Sleep, Poweroff, or Sunshine controls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cause-missing-or-incorrect-nopasswd-sudoers-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cause: Missing or incorrect NOPASSWD sudoers rule
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sunshine-moonlight-streaming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎮 Sunshine &amp; Moonlight Streaming
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🎮 Sunshine &amp; Moonlight Streaming">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-moonlight-gives-a-black-screen-or-failed-to-connect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Moonlight gives a black screen or "Failed to connect"
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Moonlight gives a black screen or &#34;Failed to connect&#34;">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cause-a-headless-rig-without-display-attached" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cause A: Headless Rig without Display Attached
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cause-b-sunshine-service-crashed-after-video-driver-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cause B: Sunshine service crashed after video driver update
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#remote-access-away-from-home" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🌐 Remote Access (Away from Home)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🌐 Remote Access (Away from Home)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#option-a-direct-public-domain-port-forwarding-the-true-cloud-gaming-experience-zero-vpn-friction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Option A: Direct Public Domain &amp; Port Forwarding (The "True Cloud Gaming" Experience — Zero VPN Friction)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Option A: Direct Public Domain &amp; Port Forwarding (The &#34;True Cloud Gaming&#34; Experience — Zero VPN Friction)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-dns-domain-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. DNS &amp; Domain Setup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-router-port-forwarding-rules-nat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Router Port Forwarding Rules (NAT)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-update-rigpulse-configuration-webconfigphp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Update RigPulse Configuration (web/config.php)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-the-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. The Workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-b-tailscale-easiest-setup-zero-router-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Option B: Tailscale (Easiest Setup — Zero Router Config)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-c-self-hosted-wireguard-or-openvpn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Option C: Self-Hosted WireGuard or OpenVPN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-d-cloudflare-tunnel-for-rigpulse-web-hud-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Option D: Cloudflare Tunnel (for RigPulse Web HUD only)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hardware-telemetry-sensor-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🌡️ Hardware Telemetry &amp; Sensor Issues
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🌡️ Hardware Telemetry &amp; Sensor Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-cpu-temperature-is-permanently-stuck-at-20c-or-25c-on-windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. CPU Temperature is permanently stuck at 20°C (or 25°C) on Windows
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. CPU Temperature is permanently stuck at 20°C (or 25°C) on Windows">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-this-happens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why this happens
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-fix-librehardwaremonitor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Fix: LibreHardwareMonitor
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-fan-speed-displays-na-or" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Fan speed (%) displays 'N/A' or '—'
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-gpu-power-watts-or-clock-frequency-displays-na-after-waking-from-sleep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. GPU Power (Watts) or Clock Frequency displays 'N/A' after waking from Sleep
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. GPU Power (Watts) or Clock Frequency displays &#39;N/A&#39; after waking from Sleep">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-this-happens_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why this happens
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#wake-on-lan-wol-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚡ Wake-on-LAN (WOL) Issues
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="⚡ Wake-on-LAN (WOL) Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-the-pc-wakes-up-right-after-being-put-to-sleep-but-fails-to-wake-after-a-few-hours-or-cold-shutdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. The PC wakes up right after being put to sleep, but fails to wake after a few hours or cold shutdown
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. The PC wakes up right after being put to sleep, but fails to wake after a few hours or cold shutdown">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cause-a-windows-fast-startup-hybrid-sleep-cuts-power-to-the-nic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cause A: Windows "Fast Startup" (Hybrid Sleep) cuts power to the NIC
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cause-b-motherboard-erp-eup-energy-saving-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cause B: Motherboard ErP / EuP Energy Saving Mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cause-c-windows-network-adapter-energy-efficient-ethernet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cause C: Windows Network Adapter Energy Efficient Ethernet
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cause-d-linux-networkmanager-or-tlp-power-saving-disables-wol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cause D: Linux NetworkManager or TLP Power-Saving Disables WOL
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-can-i-wake-my-pc-over-wi-fi-wowlan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Can I wake my PC over Wi-Fi (WoWLAN)?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-can-i-send-wake-on-lan-packets-over-the-internet-or-across-subnets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Can I send Wake-on-LAN packets over the Internet or across subnets?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#openssh-agent-troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔒 OpenSSH &amp; Agent Troubleshooting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔒 OpenSSH &amp; Agent Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-permission-denied-publickey-when-testing-ssh-from-the-companion-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Permission denied (publickey) when testing SSH from the companion server
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Permission denied (publickey) when testing SSH from the companion server">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cause-a-openssh-permissions-on-windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cause A: OpenSSH permissions on Windows
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cause-b-wrong-authorized_keys-file-used-on-windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cause B: Wrong authorized_keys file used on Windows
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cause-c-openssh-directory-and-file-permissions-on-linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cause C: OpenSSH directory and file permissions on Linux
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-rigpulse-displays-ssh-starting-and-doesnt-update-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. RigPulse displays "SSH starting..." and doesn't update metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-linux-sudoers-permission-denied-for-sleep-poweroff-or-sunshine-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Linux sudoers permission denied for Sleep, Poweroff, or Sunshine controls
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Linux sudoers permission denied for Sleep, Poweroff, or Sunshine controls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cause-missing-or-incorrect-nopasswd-sudoers-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cause: Missing or incorrect NOPASSWD sudoers rule
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sunshine-moonlight-streaming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎮 Sunshine &amp; Moonlight Streaming
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🎮 Sunshine &amp; Moonlight Streaming">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-moonlight-gives-a-black-screen-or-failed-to-connect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Moonlight gives a black screen or "Failed to connect"
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Moonlight gives a black screen or &#34;Failed to connect&#34;">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cause-a-headless-rig-without-display-attached" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cause A: Headless Rig without Display Attached
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cause-b-sunshine-service-crashed-after-video-driver-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cause B: Sunshine service crashed after video driver update
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#remote-access-away-from-home" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🌐 Remote Access (Away from Home)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🌐 Remote Access (Away from Home)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#option-a-direct-public-domain-port-forwarding-the-true-cloud-gaming-experience-zero-vpn-friction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Option A: Direct Public Domain &amp; Port Forwarding (The "True Cloud Gaming" Experience — Zero VPN Friction)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Option A: Direct Public Domain &amp; Port Forwarding (The &#34;True Cloud Gaming&#34; Experience — Zero VPN Friction)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-dns-domain-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. DNS &amp; Domain Setup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-router-port-forwarding-rules-nat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Router Port Forwarding Rules (NAT)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-update-rigpulse-configuration-webconfigphp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Update RigPulse Configuration (web/config.php)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-the-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. The Workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-b-tailscale-easiest-setup-zero-router-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Option B: Tailscale (Easiest Setup — Zero Router Config)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-c-self-hosted-wireguard-or-openvpn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Option C: Self-Hosted WireGuard or OpenVPN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-d-cloudflare-tunnel-for-rigpulse-web-hud-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Option D: Cloudflare Tunnel (for RigPulse Web HUD only)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hardware-telemetry-sensor-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🌡️ Hardware Telemetry &amp; Sensor Issues
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🌡️ Hardware Telemetry &amp; Sensor Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-cpu-temperature-is-permanently-stuck-at-20c-or-25c-on-windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. CPU Temperature is permanently stuck at 20°C (or 25°C) on Windows
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. CPU Temperature is permanently stuck at 20°C (or 25°C) on Windows">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-this-happens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why this happens
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-fix-librehardwaremonitor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Fix: LibreHardwareMonitor
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-fan-speed-displays-na-or" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Fan speed (%) displays 'N/A' or '—'
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-gpu-power-watts-or-clock-frequency-displays-na-after-waking-from-sleep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. GPU Power (Watts) or Clock Frequency displays 'N/A' after waking from Sleep
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. GPU Power (Watts) or Clock Frequency displays &#39;N/A&#39; after waking from Sleep">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-this-happens_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why this happens
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="faq-troubleshooting">FAQ &amp; Troubleshooting</h1>
+<p>This guide covers common issues and questions regarding Wake-on-LAN, OpenSSH connectivity, Sunshine game streaming, and remote network access.</p>
+<hr />
+<h2 id="wake-on-lan-wol-issues">⚡ Wake-on-LAN (WOL) Issues</h2>
+<h3 id="1-the-pc-wakes-up-right-after-being-put-to-sleep-but-fails-to-wake-after-a-few-hours-or-cold-shutdown">1. The PC wakes up right after being put to sleep, but fails to wake after a few hours or cold shutdown</h3>
+<p>This is the <strong>#1 most common issue</strong> with Wake-on-LAN on Windows desktops.</p>
+<h4 id="cause-a-windows-fast-startup-hybrid-sleep-cuts-power-to-the-nic">Cause A: Windows "Fast Startup" (Hybrid Sleep) cuts power to the NIC</h4>
+<p>Windows 10 and 11 feature "Fast Startup" (hybrid hibernation). When you shut down Windows, it puts the kernel into hibernation and powers off the motherboard PCIe bus and Ethernet controller completely, preventing the NIC from listening for magic packets.</p>
+<p><strong>Fix</strong>:
+1. Open <strong>Control Panel</strong> → <strong>Power Options</strong>.
+2. Click <strong>Choose what the power buttons do</strong> on the left.
+3. Click <strong>Change settings that are currently unavailable</strong>.
+4. Uncheck <strong>Turn on fast startup (recommended)</strong> and click <strong>Save changes</strong>.</p>
+<h4 id="cause-b-motherboard-erp-eup-energy-saving-mode">Cause B: Motherboard ErP / EuP Energy Saving Mode</h4>
+<p>Modern motherboards have European Eco (ErP/EuP) modes enabled by default in BIOS/UEFI. These modes cut +5VSB standby rail power to sub-0.5W when the PC is off, depriving the Ethernet PHY controller of electricity.</p>
+<p><strong>Fix</strong>:
+1. Reboot into your motherboard BIOS/UEFI (typically <code>Del</code> or <code>F2</code>).
+2. Navigate to <strong>Advanced</strong> → <strong>Power Management Setup</strong> or <strong>APM Configuration</strong>.
+3. Set <strong>ErP / EuP Ready</strong> to <strong>Disabled</strong>.
+4. Ensure <strong>Power On By PCI-E</strong> or <strong>Wake on LAN</strong> is set to <strong>Enabled</strong>.</p>
+<h4 id="cause-c-windows-network-adapter-energy-efficient-ethernet">Cause C: Windows Network Adapter Energy Efficient Ethernet</h4>
+<ol>
+<li>Open <strong>Device Manager</strong> → <strong>Network adapters</strong> → right-click your Ethernet adapter → <strong>Properties</strong>.</li>
+<li>Go to the <strong>Advanced</strong> tab:</li>
+<li>Disable <strong>Energy Efficient Ethernet</strong> / <strong>Green Ethernet</strong>.</li>
+<li>Set <strong>Shutdown Wake-On-Lan</strong> to <strong>Enabled</strong>.</li>
+<li>Set <strong>Wake on Magic Packet</strong> to <strong>Enabled</strong>.</li>
+<li>Go to the <strong>Power Management</strong> tab:</li>
+<li>Check <em>Allow this device to wake the computer</em>.</li>
+<li>Check <em>Only allow a magic packet to wake the computer</em>.</li>
+</ol>
+<h4 id="cause-d-linux-networkmanager-or-tlp-power-saving-disables-wol">Cause D: Linux NetworkManager or TLP Power-Saving Disables WOL</h4>
+<p>On Linux gaming distributions (Bazzite, ChimeraOS, SteamOS, Arch, Ubuntu), power management daemons or NetworkManager can power down the Ethernet PHY or clear the magic packet flag upon suspend/shutdown:
+1. <strong>NetworkManager</strong>: Ensure the connection profile permanently enables magic packet WOL:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>nmcli<span class="w"> </span>connection<span class="w"> </span>modify<span class="w"> </span><span class="s2">"Wired connection 1"</span><span class="w"> </span><span class="m">802</span>-3-ethernet.wake-on-lan<span class="w"> </span>magic
+</code></pre></div>
+2. <strong>TLP / Power Management</strong>: If your distro uses TLP for power saving, edit <code>/etc/default/tlp</code> and ensure:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>WOL_DISABLE=N
+</code></pre></div>
+3. <strong>Verify Active State</strong>: Check that the magic packet flag (<code>g</code>) is active before shutting down:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sudo<span class="w"> </span>ethtool<span class="w"> </span>eth0<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>Wake-on
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="c1"># Should output: Wake-on: g</span>
+</code></pre></div></p>
+<hr />
+<h3 id="2-can-i-wake-my-pc-over-wi-fi-wowlan">2. Can I wake my PC over Wi-Fi (WoWLAN)?</h3>
+<p>Technically, some Wi-Fi cards support Wake-on-Wireless-LAN (WoWLAN), but it is notoriously unreliable:
+- Most Wi-Fi routers disassociate inactive wireless clients after a few minutes of inactivity.
+- Standby power to PCIe/M.2 Wi-Fi cards is rarely sustained in deep S5 shutdown.</p>
+<p><strong>Recommendation</strong>: Connect your gaming rig via an <strong>Ethernet cable</strong> directly to your switch or router for 100% reliable WOL and zero-jitter game streaming.</p>
+<hr />
+<h3 id="3-can-i-send-wake-on-lan-packets-over-the-internet-or-across-subnets">3. Can I send Wake-on-LAN packets over the Internet or across subnets?</h3>
+<p>Standard Wake-on-LAN packets are layer-2 Ethernet broadcast frames (<code>FF:FF:FF:FF:FF:FF</code>). They <strong>cannot cross routers, internet gateways, or VPN tunnels</strong> by default.</p>
+<p><strong>Why RigPulse solves this</strong>:
+RigPulse runs on an always-on companion device (Raspberry Pi, mini PC, NAS, or home server) connected to the <strong>same local subnet as your gaming rig</strong>. You access RigPulse's web interface over HTTPS or VPN; RigPulse then injects the raw layer-2 UDP broadcast packet directly onto the local LAN wire.</p>
+<hr />
+<h2 id="openssh-agent-troubleshooting">🔒 OpenSSH &amp; Agent Troubleshooting</h2>
+<h3 id="1-permission-denied-publickey-when-testing-ssh-from-the-companion-server">1. <code>Permission denied (publickey)</code> when testing SSH from the companion server</h3>
+<h4 id="cause-a-openssh-permissions-on-windows">Cause A: OpenSSH permissions on Windows</h4>
+<p>Windows OpenSSH is extremely strict regarding file permissions on <code>administrators_authorized_keys</code> or <code>authorized_keys</code>. If permission inheritance is enabled, OpenSSH will silently ignore the key file.</p>
+<p><strong>Fix for Administrator accounts</strong>:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c"># Reset permissions on administrators_authorized_keys</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">icacls</span><span class="p">.</span><span class="n">exe</span> <span class="s2">"C:\ProgramData\ssh\administrators_authorized_keys"</span> <span class="p">/</span><span class="n">inheritance</span><span class="p">:</span><span class="nb">r </span><span class="p">/</span><span class="n">grant</span> <span class="s2">"Administrators:F"</span> <span class="p">/</span><span class="n">grant</span> <span class="s2">"SYSTEM:F"</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nb">Restart-Service</span> <span class="n">sshd</span>
+</code></pre></div></p>
+<h4 id="cause-b-wrong-authorized_keys-file-used-on-windows">Cause B: Wrong authorized_keys file used on Windows</h4>
+<ul>
+<li>If the remote Windows user is an <strong>Administrator</strong>, Windows OpenSSH ignores <code>C:\Users\&lt;user&gt;\.ssh\authorized_keys</code> and exclusively reads <code>C:\ProgramData\ssh\administrators_authorized_keys</code>.</li>
+<li>If the remote Windows user is a <strong>Standard User</strong>, OpenSSH reads <code>C:\Users\&lt;user&gt;\.ssh\authorized_keys</code>.</li>
+</ul>
+<h4 id="cause-c-openssh-directory-and-file-permissions-on-linux">Cause C: OpenSSH directory and file permissions on Linux</h4>
+<p>Linux OpenSSH (<code>sshd</code>) enforces strict ownership and permission checks (<code>StrictModes</code> enabled by default). If your home directory or <code>.ssh</code> folder is group- or world-writable, SSH will reject public-key authentication with <code>Permission denied (publickey)</code>:</p>
+<p><strong>Fix</strong>:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Ensure correct ownership (replace gamer with your username)</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>sudo<span class="w"> </span>chown<span class="w"> </span>-R<span class="w"> </span>gamer:gamer<span class="w"> </span>~/.ssh
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="c1"># Set strict POSIX directory and key permissions</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>chmod<span class="w"> </span><span class="m">700</span><span class="w"> </span>~/.ssh
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>chmod<span class="w"> </span><span class="m">600</span><span class="w"> </span>~/.ssh/authorized_keys
+</code></pre></div></p>
+<hr />
+<h3 id="2-rigpulse-displays-ssh-starting-and-doesnt-update-metrics">2. RigPulse displays "SSH starting..." and doesn't update metrics</h3>
+<ol>
+<li>Check if the target machine has finished booting the operating system and has acquired an IP address.</li>
+<li>Verify that the OpenSSH daemon is running and set to automatic startup:</li>
+<li><strong>Windows</strong>:
+     <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nb">Get-Service</span> <span class="n">sshd</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="n">-Property</span> <span class="n">Name</span><span class="p">,</span> <span class="n">StartType</span><span class="p">,</span> <span class="n">Status</span>
+</code></pre></div></li>
+<li><strong>Linux</strong>:
+     <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>status<span class="w"> </span>sshd
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="c1"># If stopped, enable and start immediately:</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>--now<span class="w"> </span>sshd
+</code></pre></div></li>
+<li>Test SSH connectivity manually from your companion server:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>ssh<span class="w"> </span>-i<span class="w"> </span>web/ssh/id_ed25519<span class="w"> </span>-p<span class="w"> </span><span class="m">22</span><span class="w"> </span>gamer@192.168.1.100<span class="w"> </span>capabilities
+</code></pre></div></li>
+</ol>
+<hr />
+<h3 id="3-linux-sudoers-permission-denied-for-sleep-poweroff-or-sunshine-controls">3. Linux <code>sudoers</code> permission denied for Sleep, Poweroff, or Sunshine controls</h3>
+<p>If Wake-on-LAN and telemetry work, but clicking <strong>SLEEP</strong>, <strong>SHUTDOWN</strong>, or <strong>Restart Sunshine</strong> returns an error:</p>
+<h4 id="cause-missing-or-incorrect-nopasswd-sudoers-rule">Cause: Missing or incorrect NOPASSWD sudoers rule</h4>
+<p>The RigPulse Linux agent runs as your standard user (e.g. <code>gamer</code>) and invokes system power commands via <code>sudo systemctl</code>. Without a passwordless sudoers entry, the command will fail or hang waiting for an interactive terminal password prompt.</p>
+<p><strong>Fix</strong>:
+1. Edit the dedicated sudoers file using <code>visudo</code>:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>sudo<span class="w"> </span>visudo<span class="w"> </span>-f<span class="w"> </span>/etc/sudoers.d/rigpulse
+</code></pre></div>
+2. Ensure the following line is present (replace <code>gamer</code> with your exact Linux username):
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>gamer ALL=(ALL) NOPASSWD: /usr/bin/systemctl poweroff, /usr/bin/systemctl suspend, /usr/bin/systemctl start sunshine, /usr/bin/systemctl stop sunshine, /usr/bin/systemctl restart sunshine
+</code></pre></div>
+3. Set strict permissions on the sudoers drop-in:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>sudo<span class="w"> </span>chmod<span class="w"> </span><span class="m">0440</span><span class="w"> </span>/etc/sudoers.d/rigpulse
+</code></pre></div></p>
+<hr />
+<h2 id="sunshine-moonlight-streaming">🎮 Sunshine &amp; Moonlight Streaming</h2>
+<h3 id="1-moonlight-gives-a-black-screen-or-failed-to-connect">1. Moonlight gives a black screen or "Failed to connect"</h3>
+<h4 id="cause-a-headless-rig-without-display-attached">Cause A: Headless Rig without Display Attached</h4>
+<p>If your gaming rig is tucked away in a closet or basement without a physical monitor powered on, the OS may not initialize the GPU display pipeline, resulting in a black screen or 1024x768 fallback resolution.</p>
+<p><strong>Fix</strong>:
+- <strong>Hardware</strong>: Plug in an inexpensive <strong>HDMI or DisplayPort Dummy Plug (EDID Emulator)</strong> (~5€ on Amazon). It fools the GPU driver into detecting a 4K 120Hz display.
+- <strong>Software</strong>: Install a virtual display driver (e.g. <strong><a href="https://github.com/itsmikethetech/Virtual-Display-Driver">Virtual-Display-Driver</a></strong> on Windows, or create a virtual display session via Gamescope / headless DRM on Linux).</p>
+<h4 id="cause-b-sunshine-service-crashed-after-video-driver-update">Cause B: Sunshine service crashed after video driver update</h4>
+<p>When GPU drivers update, the Sunshine capture session can hang.
+<strong>Fix</strong>: Simply click <strong>Restart Sunshine</strong> directly from the RigPulse dashboard. RigPulse will restart the Windows service or Linux systemd service cleanly over SSH without touching your display setup.</p>
+<hr />
+<h2 id="remote-access-away-from-home">🌐 Remote Access (Away from Home)</h2>
+<p>How do I access RigPulse and stream games with Moonlight when traveling or outside my local network?</p>
+<h3 id="option-a-direct-public-domain-port-forwarding-the-true-cloud-gaming-experience-zero-vpn-friction">Option A: Direct Public Domain &amp; Port Forwarding (The "True Cloud Gaming" Experience — Zero VPN Friction)</h3>
+<p>This is the most seamless, professional setup. It mimics commercial services like GeForce NOW or Xbox Cloud Gaming: <strong>no VPN client to connect to</strong>, no background apps draining battery on your phone or Steam Deck, and zero MTU packet fragmentation for the lowest possible streaming latency.</p>
+<pre class="mermaid"><code>flowchart LR
+    Client["📱 Phone / Steam Deck&lt;br&gt;(Anywhere on 5G / Hotel Wi-Fi)"]
+    Router["🌐 Home Router / Firewall&lt;br&gt;(Public FQDN)"]
+    RP["🍓 RigPulse (Pi)&lt;br&gt;HTTPS 443"]
+    PC["🖥️ Gaming Rig&lt;br&gt;Sunshine Ports"]
+
+    Client --&gt;|"1. Open https://gaming.mydomain.com"| Router
+    Router --&gt;|"Port 443"| RP
+    Client --&gt;|"2. Direct Moonlight Stream"| Router
+    Router --&gt;|"TCP/UDP 47984-48010"| PC</code></pre>
+<h4 id="1-dns-domain-setup">1. DNS &amp; Domain Setup</h4>
+<p>Assign a public domain or Dynamic DNS (e.g. <code>gaming.yourdomain.com</code> or DuckDNS / Cloudflare) pointing to your home's public WAN IP.</p>
+<h4 id="2-router-port-forwarding-rules-nat">2. Router Port Forwarding Rules (NAT)</h4>
+<p>Configure the following forwarding rules in your home router / gateway:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Service</th>
+<th style="text-align: left;">Protocol</th>
+<th style="text-align: left;">External Port</th>
+<th style="text-align: left;">Destination LAN IP</th>
+<th style="text-align: left;">Destination Port</th>
+<th style="text-align: left;">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>RigPulse</strong></td>
+<td style="text-align: left;">TCP</td>
+<td style="text-align: left;"><code>443</code></td>
+<td style="text-align: left;"><code>192.168.1.200</code> (Raspberry Pi)</td>
+<td style="text-align: left;"><code>443</code> or <code>8000</code></td>
+<td style="text-align: left;">Reverse proxy with Let's Encrypt or Nginx/Caddy</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Sunshine Control</strong></td>
+<td style="text-align: left;">TCP</td>
+<td style="text-align: left;"><code>47984</code>, <code>47989</code>, <code>48010</code></td>
+<td style="text-align: left;"><code>192.168.1.100</code> (Gaming PC)</td>
+<td style="text-align: left;">Same</td>
+<td style="text-align: left;">Stream handshake &amp; discovery</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Sunshine Video/Audio</strong></td>
+<td style="text-align: left;">UDP</td>
+<td style="text-align: left;"><code>47998</code>, <code>47999</code>, <code>48000</code>, <code>48002</code>, <code>48010</code></td>
+<td style="text-align: left;"><code>192.168.1.100</code> (Gaming PC)</td>
+<td style="text-align: left;">Same</td>
+<td style="text-align: left;">High-speed real-time AV streaming channels</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>[!CAUTION]
+<strong>Ports to NEVER expose to the Internet</strong>:
+- <strong>Port 47990 (Sunshine Web Admin)</strong>: Keep this strictly local.
+- <strong>Port 22 (OpenSSH)</strong>: RigPulse talks to your gaming PC over SSH <strong>strictly within the local LAN</strong>. The SSH bridge must never be exposed to WAN.
+- <strong>Port 3389 (Windows RDP)</strong>: Never expose raw RDP to the public internet.</p>
+</blockquote>
+<h4 id="3-update-rigpulse-configuration-webconfigphp">3. Update RigPulse Configuration (<code>web/config.php</code>)</h4>
+<p>Set your public domain so RigPulse displays the WAN latency sparkline and configures external links:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="x">'target' =&gt; [</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="x">    // ...</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="x">    'public_domain' =&gt; 'gaming.yourdomain.com',</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="x">],</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="x">'sunshine' =&gt; [</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="x">    'enabled'  =&gt; true,</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="x">    'wan_host' =&gt; 'gaming.yourdomain.com',</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="x">    // ...</span>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="x">],</span>
+</code></pre></div></p>
+<h4 id="4-the-workflow">4. The Workflow</h4>
+<ol>
+<li>From any browser anywhere in the world, navigate to <code>https://gaming.yourdomain.com</code>.</li>
+<li>Authenticate, tap <strong>POWER ON</strong>.</li>
+<li>Watch the live boot progression and Sunshine port indicators turn green.</li>
+<li>Launch Moonlight, select <code>gaming.yourdomain.com</code>, and enjoy low-latency 4K 120 FPS gaming instantly.</li>
+<li>When done, tap <strong>SLEEP</strong> from the RigPulse HUD to suspend the machine.</li>
+</ol>
+<hr />
+<h3 id="option-b-tailscale-easiest-setup-zero-router-config">Option B: Tailscale (Easiest Setup — Zero Router Config)</h3>
+<p>If your home ISP uses CGNAT (Carrier-Grade NAT) and you cannot forward ports:
+1. Install <strong>Tailscale</strong> on your Raspberry Pi (RigPulse companion) and your mobile device (phone, laptop, Steam Deck).
+2. Access the RigPulse web dashboard via your Raspberry Pi's Tailscale IP (e.g. <code>http://100.x.y.z:8000</code>).
+3. For Moonlight streaming: enable <strong>Subnet Router</strong> on your Raspberry Pi Tailscale node so you can reach your gaming rig's local IP address directly.</p>
+<hr />
+<h3 id="option-c-self-hosted-wireguard-or-openvpn">Option C: Self-Hosted WireGuard or OpenVPN</h3>
+<p>Host a WireGuard server on your home router or Raspberry Pi. Once connected to your VPN tunnel, your mobile device behaves as if it were physically sitting on your home Wi-Fi.</p>
+<hr />
+<h3 id="option-d-cloudflare-tunnel-for-rigpulse-web-hud-only">Option D: Cloudflare Tunnel (for RigPulse Web HUD only)</h3>
+<p>You can expose the RigPulse web dashboard securely through a Cloudflare Zero Trust Tunnel without opening port 443. 
+<em>(Note: Cloudflare Tunnel supports HTTP/WebSockets for RigPulse, but does not route the UDP real-time video stream for Moonlight).</em></p>
+<hr />
+<h2 id="hardware-telemetry-sensor-issues">🌡️ Hardware Telemetry &amp; Sensor Issues</h2>
+<div class="admonition tip">
+<p class="admonition-title">Linux Zero-Config Hardware Telemetry</p>
+<p>On <strong>Linux gaming distributions</strong> (SteamOS, Bazzite, ChimeraOS, Arch, Ubuntu, Debian), the Linux kernel exposes CPU on-die DTS temperatures (<code>/sys/class/hwmon/</code> via <code>k10temp</code> for AMD Ryzen or <code>coretemp</code> for Intel Core), fan header speeds, and AMD/Intel GPU vitals (<code>/sys/class/drm/</code>) natively without any third-party background applications. NVIDIA GPUs are queried out-of-the-box via <code>nvidia-smi</code>. <strong>The LibreHardwareMonitor setup described below is only necessary on Windows.</strong></p>
+</div>
+<h3 id="1-cpu-temperature-is-permanently-stuck-at-20c-or-25c-on-windows">1. CPU Temperature is permanently stuck at 20°C (or 25°C) on Windows</h3>
+<h4 id="why-this-happens">Why this happens</h4>
+<p>On virtually all consumer desktop motherboards (ASUS, MSI, Gigabyte, ASRock), the Windows ACPI WMI provider (<code>MSAcpi_ThermalZoneTemperature</code>) returns a <strong>static, hardcoded dummy value</strong> (<code>2932</code> deci-Kelvin = <code>20.0°C</code> or <code>2982</code> = <code>25.0°C</code>). Motherboard vendors do not wire internal CPU on-die DTS (Digital Thermal Sensor) registers into standard ACPI DSDT tables on desktop ATX platforms.</p>
+<p>Windows itself does not provide any native user-space API to read CPU MSRs (Model-Specific Registers) like AMD Ryzen <code>Tctl/Tdie</code> or Intel <code>Core DTS</code>.</p>
+<h4 id="the-fix-librehardwaremonitor">The Fix: LibreHardwareMonitor</h4>
+<p>Run <a href="https://github.com/LibreHardwareMonitor/LibreHardwareMonitor">LibreHardwareMonitor</a> in the background with local telemetry publishing enabled:
+1. Download and extract <strong>LibreHardwareMonitor</strong> (run <code>LibreHardwareMonitor.exe</code> as Administrator).
+2. <strong>For LibreHardwareMonitor v0.9.5+</strong>:
+   - Go to <strong>Options</strong> → <strong>Remote Web Server</strong> → Click <strong>Run</strong> (default port <code>8085</code>).
+   - <em>(Note: WMI was removed in v0.9.5+ in favor of this built-in high-performance local JSON server. Once started, LibreHardwareMonitor persists the running state in its config file and automatically relaunches the web server on every reboot).</em>
+3. <strong>For older versions (≤ v0.9.4) or OpenHardwareMonitor</strong>:
+   - Go to <strong>Options</strong> → <strong>WMI</strong> → Check <strong>Enable WMI</strong>.
+4. Check <strong>Run On Windows Startup</strong> and <strong>Minimize to System Tray</strong>.
+5. <strong>(Recommended for Gaming)</strong>:
+   - <strong>Low CPU Priority</strong>: Set permanent Below Normal priority via <code>New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\LibreHardwareMonitor.exe\PerfOptions" -Force; Set-ItemProperty -Path "..." -Name "CpuPriorityClass" -Value 5 -Type DWord</code>.
+   - <strong>Uncheck Unused Sensors</strong>: In the <strong>Hardware</strong> menu, uncheck <strong>RAM</strong>, <strong>Storage</strong>, and <strong>Network</strong> (leave only Mainboard/CPU and GPU).
+   - <strong>Update Interval</strong>: In <strong>Options</strong> → <strong>Update Interval</strong>, change from <code>1s</code> to <code>2s</code> or <code>3s</code>.
+6. The RigPulse agent will immediately query <code>http://127.0.0.1:8085/data.json</code> (or WMI) and stream true, dynamic CPU temperatures (e.g. 35°C idle, 72°C gaming) instead of the static dummy reading.</p>
+<hr />
+<h3 id="2-fan-speed-displays-na-or">2. Fan speed (%) displays 'N/A' or '—'</h3>
+<p>Windows has <strong>no built-in API or performance counter for motherboard fan headers</strong> (CPU_FAN, PUMP_FAN, CHA_FAN).
+- <strong>For NVIDIA GPUs</strong>: GPU fan percentage is read natively via <code>nvidia-smi</code>.
+- <strong>For CPU Fans &amp; AMD/Intel GPU Fans</strong>: Enabling <strong>LibreHardwareMonitor</strong> (with Remote Web Server or WMI enabled as above) reads motherboard Super I/O chips (Nuvoton, ITE, Fintek) and exposes fan speeds and control percentages directly to the RigPulse agent.</p>
+<hr />
+<h3 id="3-gpu-power-watts-or-clock-frequency-displays-na-after-waking-from-sleep">3. GPU Power (Watts) or Clock Frequency displays 'N/A' after waking from Sleep</h3>
+<h4 id="why-this-happens_1">Why this happens</h4>
+<p>On Windows 11 with NVIDIA drivers in the <strong>581.xx to 595.xx</strong> series, a known driver bug affects the <strong>NVML</strong> (<em>NVIDIA Management Library</em>) power telemetry subsystem during ACPI S3 sleep/resume transitions. When the system wakes up, <code>nvidia-smi</code> returns <code>[Not Supported]</code> for <code>power.draw</code>, and external tools relying on NVML (like LibreHardwareMonitor or HWiNFO) also lose access to the GPU power sensor.</p>
+<h4 id="the-fixes">The Fixes</h4>
+<ol>
+<li><strong>Update your NVIDIA Driver</strong>: NVIDIA addressed this sensor reinitialization issue in driver versions <strong>596.36 and newer</strong>. Updating via the NVIDIA App or GeForce Experience to the latest Game Ready / Studio driver permanently fixes the issue.</li>
+<li><strong>Disable Windows "Fast Startup"</strong>: In <strong>Control Panel</strong> → <strong>Power Options</strong> → <strong>Choose what the power buttons do</strong>, uncheck <strong>Turn on fast startup</strong>.</li>
+<li><strong>Instant Driver Reset (without rebooting)</strong>: If your PC just woke from sleep and power draw is stuck, press:
+   <kbd>Win</kbd> + <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>
+   This restarts the Windows Graphics / WDDM stack and immediately wakes the NVML sensors.</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "content.code.copy", "content.code.annotate"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
