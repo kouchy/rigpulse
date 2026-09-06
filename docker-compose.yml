@@ -1,0 +1,13 @@
+services:
+  rigpulse:
+    build: .
+    container_name: rigpulse
+    restart: unless-stopped
+    # host networking is REQUIRED for Wake-on-LAN layer-2 UDP broadcast packets to reach the physical LAN
+    network_mode: host
+    volumes:
+      - ./web/config.php:/var/www/html/web/config.php:ro
+      - ./web/ssh:/var/www/html/web/ssh:ro
+      - ./web/data:/var/www/html/web/data:rw
+    environment:
+      - TZ=UTC

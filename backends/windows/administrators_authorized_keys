@@ -1,0 +1,1 @@
+command="powershell -ExecutionPolicy Bypass -NonInteractive -File C:\ProgramData\ssh\rigpulse_agent.ps1",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty ssh-ed25519 <PASTE_YOUR_ID_ED25519_PUB_HERE> rigpulse-bridge

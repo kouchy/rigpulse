@@ -1,0 +1,45 @@
+name: Deploy Documentation
+
+on:
+  push:
+    branches:
+      - master
+      - main
+    paths:
+      - 'docs/**'
+      - 'mkdocs.yml'
+      - 'README.md'
+      - 'requirements.txt'
+      - '.github/workflows/docs.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Deploy to GitHub Pages
+        run: |
+          cp -r web docs/demo
+          sed -i 's/ENABLE_DEMO = false/ENABLE_DEMO = true/' docs/demo/js/demo.js
+          npx -y esbuild docs/demo/js/app.js --bundle --format=iife --outfile=docs/demo/js/bundle.js
+          mkdocs gh-deploy --force
+

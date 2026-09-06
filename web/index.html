@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RigPulse — Remote Host Telemetry & Power Management</title>
+    <meta name="description" content="RigPulse: Real-time telemetry HUD and remote power management dashboard for gaming rigs and workstations">
+    <link rel="icon" type="image/jpeg" href="assets/favicon.jpg">
+    <link rel="apple-touch-icon" href="assets/favicon.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" id="theme-stylesheet" href="style.css?v=31">
+</head>
+
+<body>
+    <!-- ═══ Cyberpunk HUD Initial Loader ═══════════════════════════ -->
+    <div class="cyber-loader-overlay" id="cyber-loader">
+        <div class="cyber-loader-content">
+            <div class="cyber-spinner">
+                <div class="spinner-ring ring-outer"></div>
+                <div class="spinner-ring ring-inner"></div>
+                <div class="spinner-core"></div>
+            </div>
+            <div class="cyber-loader-title">INITIALIZING HUD…</div>
+            <div class="cyber-loader-status" id="cyber-loader-status">ESTABLISHING LINK</div>
+        </div>
+    </div>
+
+    <div class="scanlines"></div>
+
+    <!-- ═══ Lock Screen ═══════════════════════════════════════════ -->
+    <div class="lock-screen" id="lock-screen" style="display: none;">
+        <div class="lock-card">
+            <div class="lock-icon">🔒</div>
+            <h1 class="lock-title" id="lock-title">&nbsp;</h1>
+            <p class="lock-subtitle">Enter password to continue</p>
+            <form class="lock-form" id="lock-form" autocomplete="off">
+                <div class="lock-input-wrap">
+                    <input type="password" id="lock-password" class="lock-input" placeholder="••••••••"
+                        autocomplete="off" spellcheck="false" required>
+                    <button type="submit" class="lock-submit" id="lock-submit">
+                        <span class="lock-submit-text">AUTHENTICATE</span>
+                    </button>
+                </div>
+                <div class="lock-error" id="lock-error"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ═══ Main UI (hidden until authenticated) ══════════════════ -->
+    <main class="container" id="main-container" style="display: none;">
+        <!-- Status indicator -->
+        <div class="status-panel" id="status-panel">
+            <div class="status-dot" id="status-dot"></div>
+            <div class="status-text">
+                <div class="status-header-row">
+                    <span class="status-label" id="target-name-label">RIGPULSE</span>
+                    <span class="status-uptime" id="status-uptime" style="display: none;"></span>
+                </div>
+                <div class="status-details">
+                    <span class="status-value" id="status-value">SCANNING…</span>
+                    <span class="status-ip" id="status-ip" style="display: none;"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Power button area: POWER ON (single) or POWER OFF + SLEEP (side by side) -->
+        <div class="power-area" id="power-area">
+            <button class="wol-btn" id="power-btn" disabled>
+                <svg class="wol-btn-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z" />
+                </svg>
+                <span class="wol-btn-text">POWER ON</span>
+            </button>
+            <!-- Sleep button (S3) — shown only when machine is ON + SSH ready -->
+            <button class="wol-btn sleep-btn" id="sleep-btn" style="display: none;">
+                <svg class="wol-btn-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z" />
+                </svg>
+                <span class="wol-btn-text">SLEEP</span>
+            </button>
+        </div>
+
+        <!-- Stable Feedback & Notice Slot (fixed height to prevent pushing hero badge) -->
+        <div class="notice-slot" id="notice-slot">
+            <!-- SSH not ready notice (shown when UP but SSH not available yet) -->
+            <div class="ssh-notice" id="ssh-notice" style="display: none;">
+                <span class="ssh-notice-dot"></span>
+                <span id="ssh-notice-text">SSH server starting…</span>
+            </div>
+
+            <!-- Feedback message -->
+            <div class="message" id="message"></div>
+        </div>
+
+        <!-- ═══ Dynamic Synthwave Hero Brand Badge ═════════════════════ -->
+        <div class="hero-badge offline off" id="hero-badge" aria-label="Host System Identity Badge">
+            <!-- Background Hyper-Speed Laser Streaks -->
+            <div class="hero-speedlines" id="hero-speedlines" aria-hidden="true">
+                <span class="speedline s-left l1"></span>
+                <span class="speedline s-left l2"></span>
+                <span class="speedline s-left l3"></span>
+                <span class="speedline s-left l4"></span>
+                <span class="speedline s-right r1"></span>
+                <span class="speedline s-right r2"></span>
+                <span class="speedline s-right r3"></span>
+                <span class="speedline s-right r4"></span>
+            </div>
+
+            <!-- Top kicker: 8-Bit Pixel Pac-Man, WELCOME ON, and 8-Bit Mario -->
+            <div class="hero-kicker">
+                <!-- Authentic 8-Bit Square-Pixel Pac-Man with Speed Trail & Pellets -->
+                <div class="hero-pacman-wrap" id="hero-pacman-wrap" title="Pac-Man">
+                    <div class="pacman-speed-trail" aria-hidden="true">
+                        <span class="pst-line pl1"></span>
+                        <span class="pst-line pl2"></span>
+                    </div>
+                    <div class="hero-pacman-pixel">
+                        <svg class="pac-svg" viewBox="0 0 14 14" width="18" height="18" shape-rendering="crispEdges">
+                            <!-- Open mouth frame -->
+                            <path class="pac-frame-open" fill="#d8f8ff" d="M4 0h6v1H4zM2 1h10v1H2zM1 2h12v1H1zM0 3h14v1H0zM0 4h14v1H0zM0 5h8v1H0zM0 6h6v1H0zM0 7h6v1H0zM0 8h8v1H0zM0 9h14v1H0zM0 10h14v1H0zM1 11h12v1H1zM2 12h10v1H2zM4 13h6v1H4z" />
+                            <!-- Closed mouth frame -->
+                            <path class="pac-frame-closed" fill="#d8f8ff" d="M4 0h6v1H4zM2 1h10v1H2zM1 2h12v1H1zM0 3h14v1H0zM0 4h14v1H0zM0 5h14v1H0zM0 6h14v1H0zM0 7h14v1H0zM0 8h14v1H0zM0 9h14v1H0zM0 10h14v1H0zM1 11h12v1H1zM2 12h10v1H2zM4 13h6v1H4z" />
+                        </svg>
+                    </div>
+                    <div class="pac-dots" id="hero-pac-dots" aria-hidden="true">
+                        <span class="pac-dot pd1"></span>
+                        <span class="pac-dot pd2"></span>
+                        <span class="pac-dot pd3"></span>
+                        <span class="pac-ghost-dot pg1"></span>
+                    </div>
+                    <div class="hero-pac-sleep-zzz" id="hero-pac-sleep-zzz" aria-hidden="true">
+                        <span class="zzz-letter zp1">z</span>
+                        <span class="zzz-letter zp2">z</span>
+                    </div>
+                </div>
+
+                <!-- WELCOME ON (Pure Typography with Laser Underline, NO Box) -->
+                <div class="hero-kicker-title">
+                    <span class="hero-kicker-text">WELCOME ON</span>
+                    <div class="hero-kicker-line" aria-hidden="true"></div>
+                </div>
+
+                <!-- Mario running/jumping in glowing cyan/ice-blue with 4-point star -->
+                <div class="hero-mario-wrap" title="Mario">
+                    <div class="hero-mario-sprite" id="hero-mario-sprite" data-pose="run">
+                        <!-- Monochrome cyan/ice-blue pixel Mario with animated legs -->
+                        <svg class="mario-svg" viewBox="0 0 17 16" width="30" height="28" shape-rendering="crispEdges">
+                            <!-- Upper Body (Head, Cap, Face, Torso, Overalls Top) -->
+                            <rect fill="#b8f5ff" x="5" y="0" width="5" height="1"/>
+                            <rect fill="#b8f5ff" x="4" y="1" width="8" height="1"/>
+                            <rect fill="#ffffff" x="14" y="1" width="3" height="1"/>
+                            <rect fill="#0077aa" x="4" y="2" width="3" height="1"/>
+                            <rect fill="#ffffff" x="7" y="2" width="2" height="1"/>
+                            <rect fill="#0077aa" x="9" y="2" width="1" height="1"/>
+                            <rect fill="#ffffff" x="10" y="2" width="1" height="1"/>
+                            <rect fill="#ffffff" x="14" y="2" width="3" height="1"/>
+                            <rect fill="#0077aa" x="3" y="3" width="1" height="1"/>
+                            <rect fill="#ffffff" x="4" y="3" width="1" height="1"/>
+                            <rect fill="#0077aa" x="5" y="3" width="1" height="1"/>
+                            <rect fill="#ffffff" x="6" y="3" width="4" height="1"/>
+                            <rect fill="#0077aa" x="10" y="3" width="1" height="1"/>
+                            <rect fill="#ffffff" x="11" y="3" width="2" height="1"/>
+                            <rect fill="#0077aa" x="3" y="4" width="1" height="1"/>
+                            <rect fill="#ffffff" x="4" y="4" width="1" height="1"/>
+                            <rect fill="#0077aa" x="5" y="4" width="2" height="1"/>
+                            <rect fill="#ffffff" x="7" y="4" width="3" height="1"/>
+                            <rect fill="#0077aa" x="10" y="4" width="1" height="1"/>
+                            <rect fill="#ffffff" x="11" y="4" width="2" height="1"/>
+                            <rect fill="#0077aa" x="3" y="5" width="2" height="1"/>
+                            <rect fill="#ffffff" x="5" y="5" width="4" height="1"/>
+                            <rect fill="#0077aa" x="9" y="5" width="4" height="1"/>
+                            <rect fill="#ffffff" x="5" y="6" width="7" height="1"/>
+                            <rect fill="#b8f5ff" x="3" y="7" width="3" height="1"/>
+                            <rect fill="#00f0ff" x="6" y="7" width="1" height="1"/>
+                            <rect fill="#b8f5ff" x="7" y="7" width="3" height="1"/>
+                            <rect fill="#b8f5ff" x="2" y="8" width="4" height="1"/>
+                            <rect fill="#00f0ff" x="6" y="8" width="1" height="1"/>
+                            <rect fill="#b8f5ff" x="7" y="8" width="3" height="1"/>
+                            <rect fill="#00f0ff" x="10" y="8" width="1" height="1"/>
+                            <rect fill="#b8f5ff" x="11" y="8" width="3" height="1"/>
+                            <rect fill="#ffffff" x="1" y="9" width="2" height="1"/>
+                            <rect fill="#b8f5ff" x="3" y="9" width="3" height="1"/>
+                            <rect fill="#00f0ff" x="6" y="9" width="5" height="1"/>
+                            <rect fill="#b8f5ff" x="11" y="9" width="3" height="1"/>
+                            <rect fill="#ffffff" x="0" y="10" width="2" height="1"/>
+                            <rect fill="#ffffff" x="4" y="10" width="2" height="1"/>
+                            <rect fill="#00f0ff" x="6" y="10" width="5" height="1"/>
+                            <rect fill="#0077aa" x="11" y="10" width="1" height="1"/>
+                            <rect fill="#ffffff" x="12" y="10" width="2" height="1"/>
+                            <rect fill="#00f0ff" x="4" y="11" width="8" height="1"/>
+
+                            <!-- State 1: Running / Standing Legs (Active when on ground) -->
+                            <g class="mario-legs-run">
+                                <rect fill="#00f0ff" x="4" y="12" width="3" height="1"/>
+                                <rect fill="#00f0ff" x="8" y="12" width="3" height="1"/>
+                                <rect fill="#0077aa" x="3" y="13" width="4" height="1"/>
+                                <rect fill="#0077aa" x="8" y="13" width="4" height="1"/>
+                                <rect fill="#005588" x="2" y="14" width="5" height="1"/>
+                                <rect fill="#005588" x="8" y="14" width="5" height="1"/>
+                                <rect fill="#003366" x="2" y="15" width="5" height="1"/>
+                                <rect fill="#003366" x="8" y="15" width="5" height="1"/>
+                            </g>
+
+                            <!-- State 2: Jumping Legs (Iconic Super Mario split-jump, active when in air) -->
+                            <g class="mario-legs-jump">
+                                <rect fill="#00f0ff" x="2" y="12" width="3" height="1"/>
+                                <rect fill="#00f0ff" x="7" y="12" width="4" height="1"/>
+                                <rect fill="#0077aa" x="1" y="13" width="4" height="1"/>
+                                <rect fill="#0077aa" x="8" y="13" width="4" height="1"/>
+                                <rect fill="#005588" x="0" y="14" width="4" height="1"/>
+                                <rect fill="#005588" x="9" y="14" width="5" height="1"/>
+                                <rect fill="#003366" x="0" y="15" width="3" height="1"/>
+                                <rect fill="#003366" x="9" y="15" width="5" height="1"/>
+                            </g>
+                        </svg>
+                        <!-- Glowing pink/white orb under jump foot -->
+                        <span class="mario-jump-orb" aria-hidden="true"></span>
+                    </div>
+                    <!-- 4-point Star with magenta flare -->
+                    <div class="hero-mario-star" id="hero-mario-star" aria-hidden="true">
+                        <span class="star-core">✦</span>
+                        <span class="star-flare"></span>
+                    </div>
+                    <div class="hero-sleep-zzz" id="hero-sleep-zzz" aria-hidden="true">
+                        <span class="zzz-letter zm1">Z</span>
+                        <span class="zzz-letter zm2">z</span>
+                        <span class="zzz-letter zm3">z</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Central Rig Title + Half-Life Lambda (Official Serif Emblem) -->
+            <div class="hero-main-row">
+                <!-- Left Glitch Accent Blocks behind O -->
+                <div class="title-glitch-left" aria-hidden="true">
+                    <span class="tglitch-blk g-cyan g1"></span>
+                    <span class="tglitch-blk g-magenta g2"></span>
+                    <span class="tglitch-blk g-blue g3"></span>
+                </div>
+
+                <div class="hero-title-wrap">
+                    <h2 class="hero-title" id="hero-title" data-text="RIGPULSE">RIGPULSE</h2>
+                    <!-- Speed Laser Cutlines through letters -->
+                    <div class="title-speed-cuts" aria-hidden="true">
+                        <span class="speed-cut c1"></span>
+                        <span class="speed-cut c2"></span>
+                    </div>
+                </div>
+
+                <!-- Authentic Half-Life Lambda (λ) Upright Circled Logo -->
+                <div class="hero-lambda-wrap" id="hero-lambda-wrap" title="Half-Life Lambda">
+                    <div class="rad-shockwaves-container" aria-hidden="true">
+                        <span class="rad-shockwave w1"></span>
+                        <span class="rad-shockwave w2"></span>
+                        <span class="rad-shockwave w3"></span>
+                    </div>
+                    <svg class="hero-lambda-svg" viewBox="0 0 40 40" width="28" height="28">
+                        <defs>
+                            <linearGradient id="lambdaRingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#00f0ff" />
+                                <stop offset="50%" stop-color="#3a86ff" />
+                                <stop offset="100%" stop-color="#d900ff" />
+                            </linearGradient>
+                            <linearGradient id="lambdaGlyphGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" stop-color="#ffffff" />
+                                <stop offset="50%" stop-color="#d8f6ff" />
+                                <stop offset="100%" stop-color="#00f0ff" />
+                            </linearGradient>
+                        </defs>
+                        <!-- Upright Circular Ring with subtle synthwave gradient -->
+                        <circle class="lambda-circle-outer" cx="20" cy="20" r="16.5" fill="none" stroke="url(#lambdaRingGrad)" stroke-width="2.5" />
+                        <!-- Authentic Half-Life Serif Lambda (λ) Glyph -->
+                        <path class="lambda-glyph-path" fill="url(#lambdaGlyphGrad)" d="M 13.5 10.5 C 14.5 9.2 16.2 8.8 18 8.8 C 18.8 8.8 19.5 9.2 19.8 10 L 25.2 23.6 H 27 V 20.8 H 28.5 V 26.2 H 22.5 L 18.2 16.8 L 14.2 24.2 H 16.2 V 26.2 H 9.8 V 24.2 H 11.8 L 17 14.5 C 15.8 13.6 14.2 13 13.2 12.2 Z" />
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Bottom: Baseline Integrated Tetris Blocks + Domain Subtitle -->
+            <div class="hero-footer-row">
+                <!-- Authentic Glitch / Tetris Cluster along Baseline -->
+                <div class="hero-tetris-cluster" id="hero-tetris-cluster" title="Tetris Baseline Blocks">
+                    <!-- Triangle dots under O corner -->
+                    <div class="tetris-tri-dots" aria-hidden="true">
+                        <span class="tdot td-top"></span>
+                        <span class="tdot td-bl"></span>
+                        <span class="tdot td-br"></span>
+                    </div>
+                    <!-- Stepped Cyan & Magenta Block Matrix matching synthwave aesthetic -->
+                    <div class="tetris-blocks-grid" id="tetris-blocks-grid">
+                        <span class="t-block b-cyan b1"></span>
+                        <span class="t-block b-cyan b2"></span>
+                        <span class="t-block b-cyan b3"></span>
+                        <span class="t-block b-ice b4"></span>
+                        <span class="t-block b-ice b5"></span>
+                        <span class="t-block b-ice b6"></span>
+                        <span class="t-block b-cyan-notch b7"></span>
+                        <span class="t-block b-blue b8"></span>
+                        <span class="t-block b-magenta b9 t-slider-pair"></span>
+                        <span class="t-block b-magenta b10 t-slider-pair"></span>
+                    </div>
+                </div>
+
+                <!-- Glitch accent mark under E -->
+                <span class="baseline-glitch-dash" aria-hidden="true"></span>
+
+                <!-- Dynamic Host Subtitle -->
+                <span class="hero-subtitle" id="hero-subtitle">LOCAL.NETWORK</span>
+            </div>
+        </div>
+    </main>
+
+    <!-- ═══ Shutdown Confirmation Modal ═══════════════════════════ -->
+    <div class="modal-overlay" id="shutdown-modal" style="display: none;">
+        <div class="modal-card">
+            <div class="modal-icon">⚠</div>
+            <h2 class="modal-title" id="shutdown-modal-title">SHUTDOWN HOST?</h2>
+            <p class="modal-body" id="shutdown-modal-body">This will immediately power off the target machine.<br>Any unsaved work will be lost.</p>
+            <div class="modal-actions">
+                <button class="modal-btn cancel" id="modal-cancel">CANCEL</button>
+                <button class="modal-btn confirm" id="modal-confirm">SHUT DOWN</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sunshine status bar (fixed bottom, collapsed by default) -->
+    <div class="sunshine-bar collapsed" id="sunshine-bar" style="display: none;">
+        <div class="sunshine-header">
+            <span class="sunshine-icon">☀</span>
+            <span class="sunshine-title">SUNSHINE</span>
+            <span class="sunshine-status" id="sunshine-status">—</span>
+            <span class="sunshine-header-ping" id="sunshine-header-ping" style="display: none;"></span>
+            <button type="button" class="sunshine-collapse-btn" id="sunshine-collapse-btn" title="Expand Sunshine panel" aria-label="Toggle Sunshine panel">
+                <svg class="sun-collapse-icon" viewBox="0 0 10 6" xmlns="http://www.w3.org/2000/svg"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+        </div>
+        <div class="sunshine-ports" id="sunshine-ports"></div>
+        <!-- Service control buttons (shown when SSH is ready) -->
+        <div class="sunshine-controls" id="sunshine-controls" style="display: none;">
+            <button class="sun-ctl-btn start" id="sun-start" title="Start Sunshine">&#9654; START</button>
+            <button class="sun-ctl-btn stop" id="sun-stop" title="Stop Sunshine">&#9632; STOP</button>
+            <button class="sun-ctl-btn restart" id="sun-restart" title="Restart Sunshine">&#8635; RESTART</button>
+        </div>
+        <!-- System monitoring (compact inside Sunshine bar) -->
+        <div class="sysinfo-panel" id="sysinfo-panel" style="display: none;">
+            <div class="sysinfo-row">
+                <span class="sysinfo-label">CPU</span>
+                <div class="sysinfo-bar">
+                    <div class="sysinfo-fill" id="cpu-fill"></div>
+                </div>
+                <span class="sysinfo-val" id="cpu-val">—</span>
+            </div>
+            <div class="sysinfo-row">
+                <span class="sysinfo-label">RAM</span>
+                <div class="sysinfo-bar">
+                    <div class="sysinfo-fill" id="ram-fill"></div>
+                </div>
+                <span class="sysinfo-val" id="ram-val">—</span>
+            </div>
+            <div class="sysinfo-row">
+                <span class="sysinfo-label">GPU</span>
+                <div class="sysinfo-bar">
+                    <div class="sysinfo-fill" id="gpu-fill"></div>
+                </div>
+                <span class="sysinfo-val" id="gpu-val">—</span>
+            </div>
+            <div class="sysinfo-row">
+                <span class="sysinfo-label">VRAM</span>
+                <div class="sysinfo-bar">
+                    <div class="sysinfo-fill" id="vram-fill"></div>
+                </div>
+                <span class="sysinfo-val" id="vram-val">—</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Offline mode banner -->
+    <div class="offline-banner" id="offline-banner" style="display: none;">
+        🔌 OFFLINE — PHP API unavailable
+    </div>
+
+    <!-- Top left action buttons (Refresh & GPU Mode) -->
+    <div class="top-bar-left" id="top-bar-left">
+        <button class="top-action-btn refresh-toggle" id="refresh-toggle" style="display: none;"
+            title="Reload page (Hard refresh)">🔄</button>
+        <button class="top-action-btn gpu-toggle" id="gpu-toggle" style="display: none;"
+            title="Performance Mode: Click to cycle (Eco 🍃 / Light 🪶 / Heavy ✨)">🍃</button>
+    </div>
+
+    <!-- Top right action buttons (Admin Diagnostics, History & Logout) -->
+    <div class="top-bar-actions" id="top-bar-actions">
+        <button class="top-action-btn diagnostics-toggle" id="diagnostics-toggle" style="display: none;"
+            title="System diagnostics (Admin)">📈</button>
+        <button class="top-action-btn history-toggle" id="history-toggle" style="display: none;"
+            title="Action history">📋</button>
+        <button class="top-action-btn logout-toggle" id="logout-toggle" style="display: none;"
+            title="Lock / Logout">🔒</button>
+    </div>
+
+    <!-- History overlay -->
+    <div class="history-overlay" id="history-overlay" style="display: none;">
+        <div class="history-card">
+            <div class="history-header">
+                <h2 class="history-title" id="history-title">ACTION HISTORY</h2>
+                <button class="history-close" id="history-close">✕</button>
+            </div>
+            <div class="history-list" id="history-list"></div>
+        </div>
+    </div>
+
+    <!-- Advanced Diagnostics Overlay (Admin only) -->
+    <div class="diagnostics-overlay" id="diagnostics-overlay" style="display: none;">
+        <div class="diagnostics-card">
+            <div class="diagnostics-header">
+                <div class="diagnostics-header-title">
+                    <span class="diagnostics-icon">📈</span>
+                    <h2 class="diagnostics-title" id="diagnostics-title">SYSTEM DIAGNOSTICS</h2>
+                    <span class="diagnostics-badge" id="diagnostics-badge">LIVE</span>
+                </div>
+                <div class="diagnostics-header-controls">
+                    <button class="diag-gpu-mode-btn eco" id="diag-gpu-mode-btn"
+                        title="Performance Mode: Click to cycle (Eco 🍃 / Light 🪶 / Heavy ✨)">
+                        <span class="gpu-mode-icon">🍃</span>
+                        <span class="gpu-mode-text">GPU: ECO</span>
+                    </button>
+                    <button class="diag-metric-btn power" id="diag-metric-btn"
+                        title="Toggle Secondary Metric: Power (Watts) ⇄ Temperature (°C)">
+                        <span class="metric-btn-icon">⚡</span>
+                        <span class="metric-btn-text">METRIC: PWR</span>
+                    </button>
+                    <button class="diag-pipeline-btn speed-1x" id="diag-pipeline-btn"
+                        title="Click to cycle refresh speed (1x / 2x / 3x)">
+                        <span class="pipeline-text">⏱️ REFRESH: 1x</span>
+                    </button>
+                </div>
+                <button class="diagnostics-close" id="diagnostics-close" title="Close diagnostics (Esc)">✕</button>
+            </div>
+
+            <div class="diagnostics-body" id="diagnostics-body">
+                <!-- Loader placeholder -->
+                <div class="diagnostics-loading" id="diagnostics-loading">
+                    <span class="diagnostics-spinner"></span>
+                    <span id="diagnostics-loading-text">PROBING SYSTEM TELEMETRY…</span>
+                </div>
+
+                <!-- Main diagnostic content -->
+                <div class="diagnostics-content" id="diagnostics-content" style="display: none;">
+
+                    <!-- Top Grid: CPU & RAM (Left) | GPU & VRAM (Right) -->
+                    <div class="diag-grid">
+                        <!-- Left: CPU, RAM & Top Processes -->
+                        <div class="diag-block diag-cpu-block">
+                            <div class="diag-block-header">
+                                <div class="diag-header-left">
+                                    <span class="diag-block-title">
+                                        <svg class="diag-icon-svg cyan" viewBox="0 0 24 24" width="15" height="15"
+                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <rect x="4" y="4" width="16" height="16" rx="2" />
+                                            <rect x="9" y="9" width="6" height="6" />
+                                            <path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3" />
+                                        </svg>
+                                        CPU
+                                    </span>
+                                    <button class="diag-chart-toggle active" id="diag-cpu-chart-btn"
+                                        title="Toggle CPU history chart">📈</button>
+                                </div>
+                                <span class="diag-block-sub" id="diag-cpu-name">CPU</span>
+                            </div>
+
+                            <div class="diag-metric-row">
+                                <div class="diag-metric-info">
+                                    <span class="diag-label">CPU LOAD</span>
+                                    <span class="diag-value" id="diag-cpu-val">—</span>
+                                </div>
+                                <div class="diag-bar">
+                                    <div class="diag-bar-fill cyan" id="diag-cpu-bar"></div>
+                                </div>
+                            </div>
+
+                            <div class="diag-metric-row">
+                                <div class="diag-metric-info">
+                                    <span class="diag-label">RAM USAGE</span>
+                                    <span class="diag-value" id="diag-ram-val">—</span>
+                                </div>
+                                <div class="diag-bar">
+                                    <div class="diag-bar-fill cyan" id="diag-ram-bar"></div>
+                                </div>
+                            </div>
+
+                            <!-- Real-time CPU & RAM History Chart -->
+                            <div class="diag-chart-wrap" id="diag-cpu-chart-wrap">
+                                <div class="diag-chart-legend">
+                                    <span class="diag-legend-pill cyan"><span class="dlp-dot"></span>CPU <strong
+                                            id="diag-chart-cpu-val">—</strong></span>
+                                    <span class="diag-legend-pill magenta"><span class="dlp-dot"></span>RAM <strong
+                                            id="diag-chart-ram-val">—</strong></span>
+                                    <span class="diag-legend-pill green" id="diag-chart-cpu-fan-pill"
+                                        style="display:none;"><span class="dlp-dot"></span>FAN <strong
+                                            id="diag-chart-cpu-fan-val">—</strong></span>
+                                    <span class="diag-legend-pill gold" id="diag-chart-cpu-pwr-pill"
+                                        style="display:none;"><span class="dlp-dot"></span><span id="diag-chart-cpu-metric-label">PWR</span> <strong
+                                            id="diag-chart-cpu-power-val">—</strong></span>
+                                </div>
+                                <canvas class="diag-canvas" id="diag-cpu-canvas" height="95"></canvas>
+                            </div>
+
+                            <!-- Top 3 processes htop table -->
+                            <div class="diag-procs-wrap">
+                                <div class="diag-procs-header">
+                                    <span class="dph-rank">#</span>
+                                    <span class="dph-pid">PID</span>
+                                    <span class="dph-name">TOP PROCESS</span>
+                                    <span class="dph-cpu">CPU</span>
+                                    <span class="dph-mem">RAM</span>
+                                </div>
+                                <div class="diag-procs-list" id="diag-procs-list">
+                                    <!-- Dynamic rows -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right: GPU, VRAM & Hardware Sensors -->
+                        <div class="diag-block diag-gpu-block">
+                            <div class="diag-block-header">
+                                <div class="diag-header-left">
+                                    <span class="diag-block-title">
+                                        <svg class="diag-icon-svg magenta" viewBox="0 0 24 24" width="15" height="15"
+                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <rect x="3" y="5" width="18" height="12" rx="2" />
+                                            <path d="M7 17v3M11 17v3M15 17v3" />
+                                            <circle cx="8.5" cy="11" r="2.5" />
+                                            <circle cx="15.5" cy="11" r="2.5" />
+                                            <path d="M2 3v16" />
+                                        </svg>
+                                        GPU
+                                    </span>
+                                    <button class="diag-chart-toggle active" id="diag-gpu-chart-btn"
+                                        title="Toggle GPU history chart">📈</button>
+                                    <span class="diag-driver-tag" id="diag-gpu-driver">—</span>
+                                </div>
+                                <span class="diag-block-sub" id="diag-gpu-name">GPU</span>
+                            </div>
+
+                            <div class="diag-metric-row">
+                                <div class="diag-metric-info">
+                                    <span class="diag-label">GPU LOAD</span>
+                                    <span class="diag-value" id="diag-gpu-val">—</span>
+                                </div>
+                                <div class="diag-bar">
+                                    <div class="diag-bar-fill magenta" id="diag-gpu-bar"></div>
+                                </div>
+                            </div>
+
+                            <div class="diag-metric-row">
+                                <div class="diag-metric-info">
+                                    <span class="diag-label">VRAM USAGE</span>
+                                    <span class="diag-value" id="diag-vram-val">—</span>
+                                </div>
+                                <div class="diag-bar">
+                                    <div class="diag-bar-fill magenta" id="diag-vram-bar"></div>
+                                </div>
+                            </div>
+
+                            <!-- Real-time GPU Multi-Scale History Chart -->
+                            <div class="diag-chart-wrap" id="diag-gpu-chart-wrap">
+                                <div class="diag-chart-legend">
+                                    <span class="diag-legend-pill cyan"><span class="dlp-dot"></span>GPU <strong
+                                            id="diag-chart-gpu-val">—</strong></span>
+                                    <span class="diag-legend-pill magenta"><span class="dlp-dot"></span>VRAM <strong
+                                            id="diag-chart-vram-val">—</strong></span>
+                                    <span class="diag-legend-pill orange"><span class="dlp-dot"></span>NVENC <strong
+                                            id="diag-chart-enc-val">—</strong></span>
+                                    <span class="diag-legend-pill green" id="diag-chart-gpu-fan-pill"><span class="dlp-dot"></span>FAN <strong
+                                            id="diag-chart-fan-val">—</strong></span>
+                                    <span class="diag-legend-pill gold" id="diag-chart-gpu-pwr-pill"><span class="dlp-dot"></span><span id="diag-chart-gpu-metric-label">PWR</span> <strong
+                                            id="diag-chart-power-val">—</strong></span>
+                                </div>
+                                <canvas class="diag-canvas diag-canvas-gpu" id="diag-gpu-canvas" height="145"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Disks Section -->
+                    <div class="diag-block diag-storage-block">
+                        <div class="diag-block-header">
+                            <div class="diag-header-left">
+                                <span class="diag-block-title">
+                                    <svg class="diag-icon-svg yellow" viewBox="0 0 24 24" width="15" height="15"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <rect x="2" y="3" width="20" height="18" rx="2" />
+                                        <path d="M2 15h20" />
+                                        <circle cx="17" cy="18" r="1" fill="currentColor" />
+                                        <circle cx="13" cy="18" r="1" fill="currentColor" />
+                                        <path d="M6 7h8M6 10h5" />
+                                    </svg>
+                                    STORAGE
+                                </span>
+                                <button class="diag-chart-toggle active" id="diag-disk-chart-btn"
+                                    title="Toggle Storage history chart">📈</button>
+                            </div>
+                            <span class="diag-block-sub" id="diag-disk-io">R: — | W: —</span>
+                        </div>
+
+                        <!-- Real-time Storage History Chart -->
+                        <div class="diag-chart-wrap" id="diag-disk-chart-wrap">
+                            <div class="diag-chart-legend">
+                                <span class="diag-legend-pill yellow"><span class="dlp-dot"></span>READ <strong
+                                        id="diag-chart-disk-read-val">—</strong></span>
+                                <span class="diag-legend-pill orange"><span class="dlp-dot"></span>WRITE <strong
+                                        id="diag-chart-disk-write-val">—</strong></span>
+                            </div>
+                            <canvas class="diag-canvas" id="diag-disk-canvas" height="95"></canvas>
+                        </div>
+
+                        <div class="diag-disks-container" id="diag-disks-container">
+                            <!-- Dynamic disk rows -->
+                        </div>
+                    </div>
+
+                    <!-- Network, Sunshine & Activity Section -->
+                    <div class="diag-block diag-net-block">
+                        <div class="diag-block-header">
+                            <div class="diag-header-left">
+                                <span class="diag-block-title">
+                                    <svg class="diag-icon-svg white" viewBox="0 0 24 24" width="15" height="15"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10" />
+                                        <path d="M2 12h4l2-4 4 8 2-4h8" />
+                                    </svg>
+                                    OTHER ACTIVITIES
+                                </span>
+                                <button class="diag-chart-toggle active" id="diag-net-chart-btn"
+                                    title="Toggle Network history chart">📈</button>
+                            </div>
+                            <span class="diag-block-sub" id="diag-uptime">—</span>
+                        </div>
+                        <div class="diag-net-grid">
+                            <div class="diag-info-item">
+                                <span class="dii-icon">☀</span>
+                                <div class="dii-content">
+                                    <span class="dii-label">SUNSHINE STREAM</span>
+                                    <span class="dii-val" id="diag-sunshine-status">—</span>
+                                </div>
+                            </div>
+                            <div class="diag-info-item diag-ping-card">
+                                <span class="dii-icon">📶</span>
+                                <div class="dii-content diag-ping-body">
+                                    <div class="diag-ping-main">
+                                        <span class="dii-label">STREAM LATENCY</span>
+                                        <span class="dii-val" id="diag-ping-cur">—</span>
+                                    </div>
+                                    <div class="diag-ping-stats-col">
+                                        <span class="diag-ping-stat" id="diag-ping-stat-avg">avg: —</span>
+                                        <span class="diag-ping-stat" id="diag-ping-stat-dev">σ: —</span>
+                                    </div>
+                                    <canvas class="diag-ping-sparkline" id="diag-ping-sparkline" height="28"></canvas>
+                                </div>
+                            </div>
+                            <div class="diag-info-item" id="diag-app-card">
+                                <span class="dii-icon" id="diag-app-icon-wrap">🎮</span>
+                                <div class="dii-content">
+                                    <div class="dii-header-row">
+                                        <span class="dii-label">ACTIVE APP</span>
+                                        <span class="dii-meta" id="diag-app-runtime"></span>
+                                    </div>
+                                    <span class="dii-val" id="diag-app">—</span>
+                                </div>
+                            </div>
+                            <div class="diag-info-item" id="diag-win-card">
+                                <span class="dii-icon">
+                                    <svg class="diag-icon-svg win-blue" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M3 3h8v8H3V3zm10 0h8v8h-8V3zM3 13h8v8H3v-8zm10 0h8v8h-8v-8z"/>
+                                    </svg>
+                                </span>
+                                <div class="dii-content">
+                                    <div class="dii-header-row">
+                                        <span class="dii-label" id="diag-win-label">WINDOWS</span>
+                                        <span class="dii-meta" id="diag-win-build"></span>
+                                    </div>
+                                    <span class="dii-val" id="diag-reboot">—</span>
+                                </div>
+                            </div>
+                            <div class="diag-info-item">
+                                <span class="dii-icon">📊</span>
+                                <div class="dii-content">
+                                    <span class="dii-label" id="diag-net-label">NETWORK TRAFFIC</span>
+                                    <span class="dii-val" id="diag-net-io">—</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Real-time Network Traffic History Chart -->
+                        <div class="diag-chart-wrap" id="diag-net-chart-wrap">
+                            <div class="diag-chart-legend">
+                                <span class="diag-legend-pill green"><span class="dlp-dot"></span>RECV <strong
+                                        id="diag-chart-net-recv-val">—</strong></span>
+                                <span class="diag-legend-pill purple"><span class="dlp-dot"></span>SENT <strong
+                                        id="diag-chart-net-sent-val">—</strong></span>
+                            </div>
+                            <canvas class="diag-canvas" id="diag-net-canvas" height="95"></canvas>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- Shared Floating Chart Hover Tooltip Bubble -->
+        <div class="diag-chart-tooltip" id="diag-chart-tooltip" style="display: none;"></div>
+    </div>
+
+    <!-- Script loader: Standalone bundle for file:// protocol (bypasses CORS restrictions on ES modules), native ES module for http/https -->
+    <script>
+        (function() {
+            var isFile = window.location.protocol === 'file:';
+            var s = document.createElement('script');
+            if (isFile) {
+                s.src = 'js/bundle.js?v=34';
+            } else {
+                s.type = 'module';
+                s.src = 'js/app.js?v=34';
+            }
+            document.body.appendChild(s);
+        })();
+    </script>
+</body>
+
+</html>

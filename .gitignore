@@ -1,0 +1,11 @@
+# RigPulse
+web/config.php
+web/ssh/
+web/data/
+*.log
+.DS_Store
+.venv/
+site/
+prompt/
+backends/windows/data.json
+docs/demo/
