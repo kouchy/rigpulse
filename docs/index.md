@@ -4,6 +4,10 @@
 
 Built with a cyberpunk console aesthetic and an obsessive focus on low energy consumption, RigPulse bridges the gap between high-performance desktop hardware and mobile streaming clients—allowing you to keep your 500W PC powered off at 0W, wake it in seconds from your couch or across the globe, stream games to any screen, monitor hardware vitals, and suspend it back to ACPI S3 sleep when your session ends.
 
+!!! tip "🚀 Interactive Web Demo Available"
+    Want to test RigPulse before deploying? **[Launch the Live Interactive Demo →](https://kouchy.github.io/rigpulse/demo/)**  
+    Experience the Wake-on-LAN simulation, ACPI S3 suspend cycle, live hardware telemetry curves, and Sunshine watchdog directly in your browser with zero setup.
+
 ---
 
 ### 📱 Mobile-First Interface Preview

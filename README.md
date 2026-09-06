@@ -15,6 +15,11 @@
   <img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="MIT License">
 </p>
 
+<p align="center">
+  <a href="https://kouchy.github.io/rigpulse/demo/"><img src="https://img.shields.io/badge/🎮%20Live%20Demo-Try%20it%20now%20→-00F0FF?style=for-the-badge&logo=googlechrome&logoColor=black" alt="Live Demo"></a>
+  <a href="https://kouchy.github.io/rigpulse/"><img src="https://img.shields.io/badge/📖%20Documentation-Read%20the%20Docs%20→-39FF14?style=for-the-badge&logo=materialformkdocs&logoColor=black" alt="Documentation"></a>
+</p>
+
 ---
 
 ### 📱 Mobile-First Cyberpunk Interface
@@ -23,6 +28,8 @@
 | :---: | :---: | :---: | :---: |
 | <a href="docs/assets/screenshots/01_password_screen.png"><img src="docs/assets/screenshots/01_password_screen.png" alt="Access Lock" width="200" /></a> | <a href="docs/assets/screenshots/02_home_offline.png"><img src="docs/assets/screenshots/02_home_offline.png" alt="Server Offline" width="200" /></a> | <a href="docs/assets/screenshots/03_home_online_sunshine.png"><img src="docs/assets/screenshots/03_home_online_sunshine.png" alt="Server Online" width="200" /></a> | <a href="docs/assets/screenshots/04_diagnostics_modal.gif"><img src="docs/assets/screenshots/04_diagnostics_modal.gif" alt="Live Diagnostics HUD" width="200" /></a> |
 | *Role-based authentication* | *One-tap Wake-on-LAN* | *Live controls & sysinfo* | *Animated telemetry & charts* |
+
+> 💡 **Don't just look at screenshots**: **[Launch the Live Interactive Demo](https://kouchy.github.io/rigpulse/demo/)** directly in your browser. Test Wake-on-LAN simulation, S3 suspend, real-time hardware telemetry curves, and Sunshine watchdog with zero setup or hardware required.
 
 ---
 
@@ -118,147 +125,53 @@ flowchart TD
 
 ## 🚀 Quick Start
 
-### 1. Server Setup (Raspberry Pi / Linux Server)
+### 1. Server Setup (Raspberry Pi / Linux Companion)
 
-Clone the repository:
+Clone the repository and run the guided bootstrap wizard:
 
 ```bash
-git clone https://github.com/your-username/rigpulse.git /var/www/rigpulse
+git clone https://github.com/kouchy/rigpulse.git /var/www/rigpulse
 cd /var/www/rigpulse
-```
-
-Run the guided bootstrap wizard:
-
-```bash
 php web/bootstrap.php
 ```
 
-This wizard interactively:
-1. Reads default values from `web/config.tpl.php` and prompts for target machine name, IP/hostname, MAC address, broadcast IP, and SSH port.
-2. Prompts and securely hashes your **Gamer** and **Admin** passwords (BCrypt cost 12).
-3. Automatically generates an Ed25519 SSH key pair (`web/ssh/id_ed25519`) if `ssh-keygen` is available.
-4. Generates `web/config.php` with strict permissions (`0640`) and creates `web/data/` with `.htaccess` protections.
+The interactive wizard configures your target machine settings, hashes **Gamer** and **Admin** passwords (BCrypt cost 12), generates an Ed25519 SSH keypair (`web/ssh/id_ed25519`), and writes a secured `web/config.php` (`0640`).
 
-*(If you prefer to generate your private SSH key manually)*:
-
-```bash
-ssh-keygen -t ed25519 -f web/ssh/id_ed25519 -C "rigpulse-bridge" -N ""
-chmod 600 web/ssh/id_ed25519
-```
-
-*(Optional: To update passwords later without touching machine settings, run `php web/update_password.php`).*
+👉 *Detailed prerequisites, manual key generation, and network settings are available in the [Companion Server Setup Guide](https://kouchy.github.io/rigpulse/getting-started/#1-companion-server-setup).*
 
 ### 2. Configure Your Web Server (DocumentRoot `web/`)
 
-Point your web server's `DocumentRoot` to the `web/` subfolder (or start the PHP built-in server for testing):
+Point your web server (`DocumentRoot`) to the `web/` subfolder:
 
 ```bash
+# Quick local preview:
 php -S 0.0.0.0:8000 -t web/
-```
 
-Or configure Nginx / Apache with root set to `/var/www/rigpulse/web`.
-
-#### Alternatively: Run with Docker Compose
-
-```bash
+# Or using Docker Compose (host networking for Layer-2 WOL broadcast):
 docker compose up -d
 ```
-*(Uses `network_mode: host` to allow Layer-2 Wake-on-LAN broadcasts to reach your LAN).*
 
-### 3. Target Host Setup
+### 3. Target Host Agent Setup
 
-RigPulse supports both **Windows 10 / 11** and **Linux (SteamOS / Bazzite / ChimeraOS / Ubuntu / Arch / Debian)** gaming rigs with lightweight native scripts that require zero third-party agent daemons or compilation. Choose your host operating system below:
+RigPulse uses native, single-file scripts on the gaming rig without any third-party background daemons:
 
-#### Option A: Windows 10 / 11 Host (`rigpulse_agent.ps1`)
-
-On the target Windows PC, open an **Administrator PowerShell** prompt:
-
-```powershell
-# 1. Install Windows OpenSSH Server
-Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
-Start-Service sshd
-Set-Service -Name sshd -StartupType 'Automatic'
-
-# 2. Set PowerShell as default SSH shell
-New-ItemProperty -Path "HKLM:\SOFTWARE\OpenSSH" -Name DefaultShell -Value "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -PropertyType String -Force
-
-# 3. Deploy agent script and lock down NTFS permissions:
-New-Item -ItemType Directory -Force -Path "C:\ProgramData\ssh"
-Copy-Item ".\backends\windows\rigpulse_agent.ps1" "C:\ProgramData\ssh\rigpulse_agent.ps1"
-icacls.exe "C:\ProgramData\ssh\rigpulse_agent.ps1" /inheritance:r /grant "Administrators:F" /grant "SYSTEM:F"
-```
-
-**Configure `administrators_authorized_keys`**:
-Edit `C:\ProgramData\ssh\administrators_authorized_keys` (see template in `backends/windows/administrators_authorized_keys`). Lock down the SSH key with a forced command restriction (recommended):
-```text
-command="powershell.exe -ExecutionPolicy Bypass -NonInteractive -File C:\ProgramData\ssh\rigpulse_agent.ps1",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty ssh-ed25519 <YOUR_PUBLIC_KEY_CONTENT> rigpulse-bridge
-```
-Apply strict NTFS permissions (mandatory for Windows OpenSSH):
-```powershell
-icacls.exe "C:\ProgramData\ssh\administrators_authorized_keys" /inheritance:r /grant "Administrators:F" /grant "SYSTEM:F"
-```
-
-#### Option B: Linux Host (`rigpulse_agent.sh`)
-
-On the target Linux machine (SteamOS, Bazzite, ChimeraOS, Arch, Ubuntu, Debian), open a terminal:
-
-```bash
-# 1. Install OpenSSH Server & Hardware Sensors
-# Ubuntu / Debian:
-sudo apt update && sudo apt install -y openssh-server lm-sensors
-# Arch Linux / SteamOS / Bazzite / ChimeraOS:
-sudo pacman -S --needed openssh
-
-# Enable and start SSH service
-sudo systemctl enable --now sshd
-
-# 2. Deploy agent script
-sudo cp backends/linux/rigpulse_agent.sh /usr/local/bin/rigpulse_agent.sh
-sudo chown root:root /usr/local/bin/rigpulse_agent.sh
-sudo chmod 755 /usr/local/bin/rigpulse_agent.sh
-```
-
-**Configure Sudoers for Passwordless Power Controls**:
-Allow the agent to suspend, power off, or restart Sunshine cleanly:
-```bash
-sudo visudo -f /etc/sudoers.d/rigpulse
-```
-Add the following line (replace `gamer` with your Linux username):
-```text
-gamer ALL=(ALL) NOPASSWD: /usr/bin/systemctl poweroff, /usr/bin/systemctl suspend, /usr/bin/systemctl start sunshine, /usr/bin/systemctl stop sunshine, /usr/bin/systemctl restart sunshine
-```
-Lock down permissions: `sudo chmod 0440 /etc/sudoers.d/rigpulse`.
-
-**Install Public Key in `~/.ssh/authorized_keys`**:
-Add your companion server's public key with forced-command lockdown (recommended):
-```text
-command="/usr/local/bin/rigpulse_agent.sh",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty ssh-ed25519 <YOUR_PUBLIC_KEY_CONTENT> rigpulse-bridge
-```
-Set strict POSIX permissions:
-```bash
-chmod 700 ~/.ssh
-chmod 600 ~/.ssh/authorized_keys
-```
+| Target Platform | Agent Script | Quick Overview & Guide Link |
+| :--- | :--- | :--- |
+| **🪟 Windows 10 / 11** | `backends/windows/rigpulse_agent.ps1` | Enable Windows OpenSSH Server, copy the script to `C:\ProgramData\ssh\`, and lock down `administrators_authorized_keys` with forced-command.<br>👉 **[Step-by-Step Windows Guide](https://kouchy.github.io/rigpulse/getting-started/#windows-host-setup)** |
+| **🐧 Linux (SteamOS / Bazzite / Ubuntu / Arch)** | `backends/linux/rigpulse_agent.sh` | Install OpenSSH, copy script to `/usr/local/bin/`, configure passwordless `visudo` for power commands, and add key to `~/.ssh/authorized_keys`.<br>👉 **[Step-by-Step Linux Guide](https://kouchy.github.io/rigpulse/getting-started/#linux-host-setup)** |
 
 ---
 
 ## 📖 Full Documentation
 
-Comprehensive documentation built with Material for MkDocs is available in the `docs/` directory:
+Comprehensive documentation with detailed hardware setup, BIOS tuning, security architecture, and configuration guides is hosted on **[kouchy.github.io/rigpulse](https://kouchy.github.io/rigpulse/)**:
 
-- **[Getting Started](docs/getting-started.md)**: Complete guide to BIOS settings, Wake-on-LAN configuration, and network prerequisites.
-- **[Architecture](docs/architecture.md)**: Deep dive into the 24/7 companion model, security boundary, and rendering pipeline.
-- **[Configuration Reference](docs/configuration.md)**: Complete guide to every option in `config.php`.
-- **[Agent Protocol v1.0](docs/agent-protocol.md)**: Specification for writing custom Linux/macOS/BSD host agents.
-
-To preview the documentation locally:
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-mkdocs serve
-```
+- 🎮 **[Interactive Live Demo](https://kouchy.github.io/rigpulse/demo/)**: Test the full web HUD, Wake-on-LAN simulation, and telemetry charts directly in your browser.
+- 🚀 **[Getting Started Guide](https://kouchy.github.io/rigpulse/getting-started/)**: BIOS ACPI/WOL prerequisites, Windows OpenSSH lockdown, Linux sudoers, and firewall rules.
+- 🏛️ **[System Architecture](https://kouchy.github.io/rigpulse/architecture/)**: In-depth look at the 24/7 companion model, SSH cryptographic boundary, and zero-scroll rendering pipeline.
+- ⚙️ **[Configuration Reference](https://kouchy.github.io/rigpulse/configuration/)**: Complete breakdown of every setting in `config.php` (client timers, thresholds, roles).
+- 📜 **[Agent Protocol Specification v1.0](https://kouchy.github.io/rigpulse/agent-protocol/)**: JSON API schema, subcommands, and guidelines for writing custom host agents.
+- 🔧 **[FAQ & Troubleshooting](https://kouchy.github.io/rigpulse/troubleshooting/)**: Solutions for Wake-on-LAN routing across subnets, Sunshine crashes, GPU power telemetry after sleep, and SSH permissions.
 
 ---
 
