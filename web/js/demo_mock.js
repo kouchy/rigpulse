@@ -574,6 +574,13 @@ export async function handleDemoApi(action, opts = {}) {
         }
 
         case 'wol': {
+            let wolBody = {};
+            try {
+                wolBody = typeof opts.body === 'string' ? JSON.parse(opts.body) : (opts.body || {});
+            } catch (e) { }
+            const isWakeUp = !!wolBody.isWakeUp;
+            const wolDelay = isWakeUp ? 3000 : 30000;
+
             if (demoState.powerTimer) clearTimeout(demoState.powerTimer);
             demoState.online = false;
             demoState.sunshineReachable = false;
@@ -597,7 +604,7 @@ export async function handleDemoApi(action, opts = {}) {
                     if (window.updateDemoUI) window.updateDemoUI();
                     window.dispatchEvent(new Event('focus'));
                 }
-            }, 30000);
+            }, wolDelay);
 
             return { success: true, message: `Magic packet sent to ${demoState.mac}` };
         }
