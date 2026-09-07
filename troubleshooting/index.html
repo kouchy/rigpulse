@@ -1472,46 +1472,58 @@
 <p>This is the <strong>#1 most common issue</strong> with Wake-on-LAN on Windows desktops.</p>
 <h4 id="cause-a-windows-fast-startup-hybrid-sleep-cuts-power-to-the-nic">Cause A: Windows "Fast Startup" (Hybrid Sleep) cuts power to the NIC</h4>
 <p>Windows 10 and 11 feature "Fast Startup" (hybrid hibernation). When you shut down Windows, it puts the kernel into hibernation and powers off the motherboard PCIe bus and Ethernet controller completely, preventing the NIC from listening for magic packets.</p>
-<p><strong>Fix</strong>:
-1. Open <strong>Control Panel</strong> → <strong>Power Options</strong>.
-2. Click <strong>Choose what the power buttons do</strong> on the left.
-3. Click <strong>Change settings that are currently unavailable</strong>.
-4. Uncheck <strong>Turn on fast startup (recommended)</strong> and click <strong>Save changes</strong>.</p>
+<p><strong>Fix</strong>:</p>
+<ol>
+<li>Open <strong>Control Panel</strong> → <strong>Power Options</strong>.</li>
+<li>Click <strong>Choose what the power buttons do</strong> on the left.</li>
+<li>Click <strong>Change settings that are currently unavailable</strong>.</li>
+<li>Uncheck <strong>Turn on fast startup (recommended)</strong> and click <strong>Save changes</strong>.</li>
+</ol>
 <h4 id="cause-b-motherboard-erp-eup-energy-saving-mode">Cause B: Motherboard ErP / EuP Energy Saving Mode</h4>
 <p>Modern motherboards have European Eco (ErP/EuP) modes enabled by default in BIOS/UEFI. These modes cut +5VSB standby rail power to sub-0.5W when the PC is off, depriving the Ethernet PHY controller of electricity.</p>
-<p><strong>Fix</strong>:
-1. Reboot into your motherboard BIOS/UEFI (typically <code>Del</code> or <code>F2</code>).
-2. Navigate to <strong>Advanced</strong> → <strong>Power Management Setup</strong> or <strong>APM Configuration</strong>.
-3. Set <strong>ErP / EuP Ready</strong> to <strong>Disabled</strong>.
-4. Ensure <strong>Power On By PCI-E</strong> or <strong>Wake on LAN</strong> is set to <strong>Enabled</strong>.</p>
+<p><strong>Fix</strong>:</p>
+<ol>
+<li>Reboot into your motherboard BIOS/UEFI (typically <code>Del</code> or <code>F2</code>).</li>
+<li>Navigate to <strong>Advanced</strong> → <strong>Power Management Setup</strong> or <strong>APM Configuration</strong>.</li>
+<li>Set <strong>ErP / EuP Ready</strong> to <strong>Disabled</strong>.</li>
+<li>Ensure <strong>Power On By PCI-E</strong> or <strong>Wake on LAN</strong> is set to <strong>Enabled</strong>.</li>
+</ol>
 <h4 id="cause-c-windows-network-adapter-energy-efficient-ethernet">Cause C: Windows Network Adapter Energy Efficient Ethernet</h4>
 <ol>
 <li>Open <strong>Device Manager</strong> → <strong>Network adapters</strong> → right-click your Ethernet adapter → <strong>Properties</strong>.</li>
-<li>Go to the <strong>Advanced</strong> tab:</li>
+<li>Go to the <strong>Advanced</strong> tab:<ul>
 <li>Disable <strong>Energy Efficient Ethernet</strong> / <strong>Green Ethernet</strong>.</li>
 <li>Set <strong>Shutdown Wake-On-Lan</strong> to <strong>Enabled</strong>.</li>
 <li>Set <strong>Wake on Magic Packet</strong> to <strong>Enabled</strong>.</li>
-<li>Go to the <strong>Power Management</strong> tab:</li>
+</ul>
+</li>
+<li>Go to the <strong>Power Management</strong> tab:<ul>
 <li>Check <em>Allow this device to wake the computer</em>.</li>
 <li>Check <em>Only allow a magic packet to wake the computer</em>.</li>
+</ul>
+</li>
 </ol>
 <h4 id="cause-d-linux-networkmanager-or-tlp-power-saving-disables-wol">Cause D: Linux NetworkManager or TLP Power-Saving Disables WOL</h4>
-<p>On Linux gaming distributions (Bazzite, ChimeraOS, SteamOS, Arch, Ubuntu), power management daemons or NetworkManager can power down the Ethernet PHY or clear the magic packet flag upon suspend/shutdown:
-1. <strong>NetworkManager</strong>: Ensure the connection profile permanently enables magic packet WOL:
+<p>On Linux gaming distributions (Bazzite, ChimeraOS, SteamOS, Arch, Ubuntu), power management daemons or NetworkManager can power down the Ethernet PHY or clear the magic packet flag upon suspend/shutdown:</p>
+<ol>
+<li><strong>NetworkManager</strong>: Ensure the connection profile permanently enables magic packet WOL:
    <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>nmcli<span class="w"> </span>connection<span class="w"> </span>modify<span class="w"> </span><span class="s2">"Wired connection 1"</span><span class="w"> </span><span class="m">802</span>-3-ethernet.wake-on-lan<span class="w"> </span>magic
-</code></pre></div>
-2. <strong>TLP / Power Management</strong>: If your distro uses TLP for power saving, edit <code>/etc/default/tlp</code> and ensure:
+</code></pre></div></li>
+<li><strong>TLP / Power Management</strong>: If your distro uses TLP for power saving, edit <code>/etc/default/tlp</code> and ensure:
    <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>WOL_DISABLE=N
-</code></pre></div>
-3. <strong>Verify Active State</strong>: Check that the magic packet flag (<code>g</code>) is active before shutting down:
+</code></pre></div></li>
+<li><strong>Verify Active State</strong>: Check that the magic packet flag (<code>g</code>) is active before shutting down:
    <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sudo<span class="w"> </span>ethtool<span class="w"> </span>eth0<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>Wake-on
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="c1"># Should output: Wake-on: g</span>
-</code></pre></div></p>
+</code></pre></div></li>
+</ol>
 <hr />
 <h3 id="2-can-i-wake-my-pc-over-wi-fi-wowlan">2. Can I wake my PC over Wi-Fi (WoWLAN)?</h3>
-<p>Technically, some Wi-Fi cards support Wake-on-Wireless-LAN (WoWLAN), but it is notoriously unreliable:
-- Most Wi-Fi routers disassociate inactive wireless clients after a few minutes of inactivity.
-- Standby power to PCIe/M.2 Wi-Fi cards is rarely sustained in deep S5 shutdown.</p>
+<p>Technically, some Wi-Fi cards support Wake-on-Wireless-LAN (WoWLAN), but it is notoriously unreliable:</p>
+<ul>
+<li>Most Wi-Fi routers disassociate inactive wireless clients after a few minutes of inactivity.</li>
+<li>Standby power to PCIe/M.2 Wi-Fi cards is rarely sustained in deep S5 shutdown.</li>
+</ul>
 <p><strong>Recommendation</strong>: Connect your gaming rig via an <strong>Ethernet cable</strong> directly to your switch or router for 100% reliable WOL and zero-jitter game streaming.</p>
 <hr />
 <h3 id="3-can-i-send-wake-on-lan-packets-over-the-internet-or-across-subnets">3. Can I send Wake-on-LAN packets over the Internet or across subnets?</h3>
@@ -1565,24 +1577,28 @@ RigPulse runs on an always-on companion device (Raspberry Pi, mini PC, NAS, or h
 <p>If Wake-on-LAN and telemetry work, but clicking <strong>SLEEP</strong>, <strong>SHUTDOWN</strong>, or <strong>Restart Sunshine</strong> returns an error:</p>
 <h4 id="cause-missing-or-incorrect-nopasswd-sudoers-rule">Cause: Missing or incorrect NOPASSWD sudoers rule</h4>
 <p>The RigPulse Linux agent runs as your standard user (e.g. <code>gamer</code>) and invokes system power commands via <code>sudo systemctl</code>. Without a passwordless sudoers entry, the command will fail or hang waiting for an interactive terminal password prompt.</p>
-<p><strong>Fix</strong>:
-1. Edit the dedicated sudoers file using <code>visudo</code>:
+<p><strong>Fix</strong>:</p>
+<ol>
+<li>Edit the dedicated sudoers file using <code>visudo</code>:
    <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>sudo<span class="w"> </span>visudo<span class="w"> </span>-f<span class="w"> </span>/etc/sudoers.d/rigpulse
-</code></pre></div>
-2. Ensure the following line is present (replace <code>gamer</code> with your exact Linux username):
+</code></pre></div></li>
+<li>Ensure the following line is present (replace <code>gamer</code> with your exact Linux username):
    <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>gamer ALL=(ALL) NOPASSWD: /usr/bin/systemctl poweroff, /usr/bin/systemctl suspend, /usr/bin/systemctl start sunshine, /usr/bin/systemctl stop sunshine, /usr/bin/systemctl restart sunshine
-</code></pre></div>
-3. Set strict permissions on the sudoers drop-in:
+</code></pre></div></li>
+<li>Set strict permissions on the sudoers drop-in:
    <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>sudo<span class="w"> </span>chmod<span class="w"> </span><span class="m">0440</span><span class="w"> </span>/etc/sudoers.d/rigpulse
-</code></pre></div></p>
+</code></pre></div></li>
+</ol>
 <hr />
 <h2 id="sunshine-moonlight-streaming">🎮 Sunshine &amp; Moonlight Streaming</h2>
 <h3 id="1-moonlight-gives-a-black-screen-or-failed-to-connect">1. Moonlight gives a black screen or "Failed to connect"</h3>
 <h4 id="cause-a-headless-rig-without-display-attached">Cause A: Headless Rig without Display Attached</h4>
 <p>If your gaming rig is tucked away in a closet or basement without a physical monitor powered on, the OS may not initialize the GPU display pipeline, resulting in a black screen or 1024x768 fallback resolution.</p>
-<p><strong>Fix</strong>:
-- <strong>Hardware</strong>: Plug in an inexpensive <strong>HDMI or DisplayPort Dummy Plug (EDID Emulator)</strong> (~5€ on Amazon). It fools the GPU driver into detecting a 4K 120Hz display.
-- <strong>Software</strong>: Install a virtual display driver (e.g. <strong><a href="https://github.com/itsmikethetech/Virtual-Display-Driver">Virtual-Display-Driver</a></strong> on Windows, or create a virtual display session via Gamescope / headless DRM on Linux).</p>
+<p><strong>Fix</strong>:</p>
+<ul>
+<li><strong>Hardware</strong>: Plug in an inexpensive <strong>HDMI or DisplayPort Dummy Plug (EDID Emulator)</strong> (~5€ on Amazon). It fools the GPU driver into detecting a 4K 120Hz display.</li>
+<li><strong>Software</strong>: Install a virtual display driver (e.g. <strong><a href="https://github.com/itsmikethetech/Virtual-Display-Driver">Virtual-Display-Driver</a></strong> on Windows, or create a virtual display session via Gamescope / headless DRM on Linux).</li>
+</ul>
 <h4 id="cause-b-sunshine-service-crashed-after-video-driver-update">Cause B: Sunshine service crashed after video driver update</h4>
 <p>When GPU drivers update, the Sunshine capture session can hang.
 <strong>Fix</strong>: Simply click <strong>Restart Sunshine</strong> directly from the RigPulse dashboard. RigPulse will restart the Windows service or Linux systemd service cleanly over SSH without touching your display setup.</p>
@@ -1643,13 +1659,15 @@ RigPulse runs on an always-on companion device (Raspberry Pi, mini PC, NAS, or h
 </tr>
 </tbody>
 </table>
-<blockquote>
-<p>[!CAUTION]
-<strong>Ports to NEVER expose to the Internet</strong>:
-- <strong>Port 47990 (Sunshine Web Admin)</strong>: Keep this strictly local.
-- <strong>Port 22 (OpenSSH)</strong>: RigPulse talks to your gaming PC over SSH <strong>strictly within the local LAN</strong>. The SSH bridge must never be exposed to WAN.
-- <strong>Port 3389 (Windows RDP)</strong>: Never expose raw RDP to the public internet.</p>
-</blockquote>
+<div class="admonition warning">
+<p class="admonition-title">CAUTION</p>
+<p><strong>Ports to NEVER expose to the Internet</strong>:</p>
+<ul>
+<li><strong>Port 47990 (Sunshine Web Admin)</strong>: Keep this strictly local.</li>
+<li><strong>Port 22 (OpenSSH)</strong>: RigPulse talks to your gaming PC over SSH <strong>strictly within the local LAN</strong>. The SSH bridge must never be exposed to WAN.</li>
+<li><strong>Port 3389 (Windows RDP)</strong>: Never expose raw RDP to the public internet.</li>
+</ul>
+</div>
 <h4 id="3-update-rigpulse-configuration-webconfigphp">3. Update RigPulse Configuration (<code>web/config.php</code>)</h4>
 <p>Set your public domain so RigPulse displays the WAN latency sparkline and configures external links:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="x">'target' =&gt; [</span>
@@ -1672,10 +1690,12 @@ RigPulse runs on an always-on companion device (Raspberry Pi, mini PC, NAS, or h
 </ol>
 <hr />
 <h3 id="option-b-tailscale-easiest-setup-zero-router-config">Option B: Tailscale (Easiest Setup — Zero Router Config)</h3>
-<p>If your home ISP uses CGNAT (Carrier-Grade NAT) and you cannot forward ports:
-1. Install <strong>Tailscale</strong> on your Raspberry Pi (RigPulse companion) and your mobile device (phone, laptop, Steam Deck).
-2. Access the RigPulse web dashboard via your Raspberry Pi's Tailscale IP (e.g. <code>http://100.x.y.z:8000</code>).
-3. For Moonlight streaming: enable <strong>Subnet Router</strong> on your Raspberry Pi Tailscale node so you can reach your gaming rig's local IP address directly.</p>
+<p>If your home ISP uses CGNAT (Carrier-Grade NAT) and you cannot forward ports:</p>
+<ol>
+<li>Install <strong>Tailscale</strong> on your Raspberry Pi (RigPulse companion) and your mobile device (phone, laptop, Steam Deck).</li>
+<li>Access the RigPulse web dashboard via your Raspberry Pi's Tailscale IP (e.g. <code>http://100.x.y.z:8000</code>).</li>
+<li>For Moonlight streaming: enable <strong>Subnet Router</strong> on your Raspberry Pi Tailscale node so you can reach your gaming rig's local IP address directly.</li>
+</ol>
 <hr />
 <h3 id="option-c-self-hosted-wireguard-or-openvpn">Option C: Self-Hosted WireGuard or OpenVPN</h3>
 <p>Host a WireGuard server on your home router or Raspberry Pi. Once connected to your VPN tunnel, your mobile device behaves as if it were physically sitting on your home Wi-Fi.</p>
@@ -1694,24 +1714,34 @@ RigPulse runs on an always-on companion device (Raspberry Pi, mini PC, NAS, or h
 <p>On virtually all consumer desktop motherboards (ASUS, MSI, Gigabyte, ASRock), the Windows ACPI WMI provider (<code>MSAcpi_ThermalZoneTemperature</code>) returns a <strong>static, hardcoded dummy value</strong> (<code>2932</code> deci-Kelvin = <code>20.0°C</code> or <code>2982</code> = <code>25.0°C</code>). Motherboard vendors do not wire internal CPU on-die DTS (Digital Thermal Sensor) registers into standard ACPI DSDT tables on desktop ATX platforms.</p>
 <p>Windows itself does not provide any native user-space API to read CPU MSRs (Model-Specific Registers) like AMD Ryzen <code>Tctl/Tdie</code> or Intel <code>Core DTS</code>.</p>
 <h4 id="the-fix-librehardwaremonitor">The Fix: LibreHardwareMonitor</h4>
-<p>Run <a href="https://github.com/LibreHardwareMonitor/LibreHardwareMonitor">LibreHardwareMonitor</a> in the background with local telemetry publishing enabled:
-1. Download and extract <strong>LibreHardwareMonitor</strong> (run <code>LibreHardwareMonitor.exe</code> as Administrator).
-2. <strong>For LibreHardwareMonitor v0.9.5+</strong>:
-   - Go to <strong>Options</strong> → <strong>Remote Web Server</strong> → Click <strong>Run</strong> (default port <code>8085</code>).
-   - <em>(Note: WMI was removed in v0.9.5+ in favor of this built-in high-performance local JSON server. Once started, LibreHardwareMonitor persists the running state in its config file and automatically relaunches the web server on every reboot).</em>
-3. <strong>For older versions (≤ v0.9.4) or OpenHardwareMonitor</strong>:
-   - Go to <strong>Options</strong> → <strong>WMI</strong> → Check <strong>Enable WMI</strong>.
-4. Check <strong>Run On Windows Startup</strong> and <strong>Minimize to System Tray</strong>.
-5. <strong>(Recommended for Gaming)</strong>:
-   - <strong>Low CPU Priority</strong>: Set permanent Below Normal priority via <code>New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\LibreHardwareMonitor.exe\PerfOptions" -Force; Set-ItemProperty -Path "..." -Name "CpuPriorityClass" -Value 5 -Type DWord</code>.
-   - <strong>Uncheck Unused Sensors</strong>: In the <strong>Hardware</strong> menu, uncheck <strong>RAM</strong>, <strong>Storage</strong>, and <strong>Network</strong> (leave only Mainboard/CPU and GPU).
-   - <strong>Update Interval</strong>: In <strong>Options</strong> → <strong>Update Interval</strong>, change from <code>1s</code> to <code>2s</code> or <code>3s</code>.
-6. The RigPulse agent will immediately query <code>http://127.0.0.1:8085/data.json</code> (or WMI) and stream true, dynamic CPU temperatures (e.g. 35°C idle, 72°C gaming) instead of the static dummy reading.</p>
+<p>Run <a href="https://github.com/LibreHardwareMonitor/LibreHardwareMonitor">LibreHardwareMonitor</a> in the background with local telemetry publishing enabled:</p>
+<ol>
+<li>Download and extract <strong>LibreHardwareMonitor</strong> (run <code>LibreHardwareMonitor.exe</code> as Administrator).</li>
+<li><strong>For LibreHardwareMonitor v0.9.5+</strong>:<ul>
+<li>Go to <strong>Options</strong> → <strong>Remote Web Server</strong> → Click <strong>Run</strong> (default port <code>8085</code>).</li>
+<li><em>(Note: WMI was removed in v0.9.5+ in favor of this built-in high-performance local JSON server. Once started, LibreHardwareMonitor persists the running state in its config file and automatically relaunches the web server on every reboot).</em></li>
+</ul>
+</li>
+<li><strong>For older versions (≤ v0.9.4) or OpenHardwareMonitor</strong>:<ul>
+<li>Go to <strong>Options</strong> → <strong>WMI</strong> → Check <strong>Enable WMI</strong>.</li>
+</ul>
+</li>
+<li>Check <strong>Run On Windows Startup</strong> and <strong>Minimize to System Tray</strong>.</li>
+<li><strong>(Recommended for Gaming)</strong>:<ul>
+<li><strong>Low CPU Priority</strong>: Set permanent Below Normal priority via <code>New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\LibreHardwareMonitor.exe\PerfOptions" -Force; Set-ItemProperty -Path "..." -Name "CpuPriorityClass" -Value 5 -Type DWord</code>.</li>
+<li><strong>Uncheck Unused Sensors</strong>: In the <strong>Hardware</strong> menu, uncheck <strong>RAM</strong>, <strong>Storage</strong>, and <strong>Network</strong> (leave only Mainboard/CPU and GPU).</li>
+<li><strong>Update Interval</strong>: In <strong>Options</strong> → <strong>Update Interval</strong>, change from <code>1s</code> to <code>2s</code> or <code>3s</code>.</li>
+</ul>
+</li>
+<li>The RigPulse agent will immediately query <code>http://127.0.0.1:8085/data.json</code> (or WMI) and stream true, dynamic CPU temperatures (e.g. 35°C idle, 72°C gaming) instead of the static dummy reading.</li>
+</ol>
 <hr />
 <h3 id="2-fan-speed-displays-na-or">2. Fan speed (%) displays 'N/A' or '—'</h3>
-<p>Windows has <strong>no built-in API or performance counter for motherboard fan headers</strong> (CPU_FAN, PUMP_FAN, CHA_FAN).
-- <strong>For NVIDIA GPUs</strong>: GPU fan percentage is read natively via <code>nvidia-smi</code>.
-- <strong>For CPU Fans &amp; AMD/Intel GPU Fans</strong>: Enabling <strong>LibreHardwareMonitor</strong> (with Remote Web Server or WMI enabled as above) reads motherboard Super I/O chips (Nuvoton, ITE, Fintek) and exposes fan speeds and control percentages directly to the RigPulse agent.</p>
+<p>Windows has <strong>no built-in API or performance counter for motherboard fan headers</strong> (CPU_FAN, PUMP_FAN, CHA_FAN).</p>
+<ul>
+<li><strong>For NVIDIA GPUs</strong>: GPU fan percentage is read natively via <code>nvidia-smi</code>.</li>
+<li><strong>For CPU Fans &amp; AMD/Intel GPU Fans</strong>: Enabling <strong>LibreHardwareMonitor</strong> (with Remote Web Server or WMI enabled as above) reads motherboard Super I/O chips (Nuvoton, ITE, Fintek) and exposes fan speeds and control percentages directly to the RigPulse agent.</li>
+</ul>
 <hr />
 <h3 id="3-gpu-power-watts-or-clock-frequency-displays-na-after-waking-from-sleep">3. GPU Power (Watts) or Clock Frequency displays 'N/A' after waking from Sleep</h3>
 <h4 id="why-this-happens_1">Why this happens</h4>
