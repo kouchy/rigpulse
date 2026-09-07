@@ -1,8 +1,9 @@
 (() => {
-  // web/js/demo.js
+  // js/demo.js
   var ENABLE_DEMO = false;
+  var DEMO_BAR = false;
 
-  // web/js/config.js
+  // js/config.js
   var defaultClientConfig = {
     // Polling intervals in milliseconds
     statusPollInterval: 3e3,
@@ -29,7 +30,7 @@
     // 'power' (Watts) | 'temp' (°C)
   };
 
-  // web/js/state.js
+  // js/state.js
   var state = {
     // Configuration & Metadata
     appName: "RigPulse",
@@ -103,7 +104,7 @@
     capabilities: null
   };
 
-  // web/js/demo_mock.js
+  // js/demo_mock.js
   var urlParams = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
   var viewMode = urlParams ? urlParams.get("view") : null;
   var hideToolbar = urlParams ? urlParams.get("hide_bar") === "1" || urlParams.get("notoolbar") === "1" : false;
@@ -716,7 +717,7 @@
     }
   }
   function initDemoToolbar() {
-    if (!isDemoMode || document.getElementById("rigpulse-demo-bar") || hideToolbar) return;
+    if (!isDemoMode || !DEMO_BAR || document.getElementById("rigpulse-demo-bar") || hideToolbar) return;
     const bar = document.createElement("div");
     bar.id = "rigpulse-demo-bar";
     bar.innerHTML = `
@@ -961,7 +962,7 @@
     };
   }
 
-  // web/js/api.js
+  // js/api.js
   var API_URL = "api.php";
   var csrfToken = null;
   var onUnauthorizedCallback = null;
@@ -1015,7 +1016,7 @@
     }
   }
 
-  // web/js/ui.js
+  // js/ui.js
   var elements = {
     lockScreen: document.getElementById("lock-screen"),
     lockTitle: document.getElementById("lock-title"),
@@ -1215,7 +1216,7 @@
     if (elements.sleepBtn) elements.sleepBtn.disabled = offline;
   }
 
-  // web/js/auth.js
+  // js/auth.js
   var onAuthSuccessCallback = null;
   var onLogoutCallback = null;
   function initAuth({ onAuthSuccess, onLogout }) {
@@ -1364,7 +1365,7 @@
     showLockScreen(true);
   }
 
-  // web/js/hero.js
+  // js/hero.js
   var heroBadgeEl = null;
   var heroTitleEl = null;
   var heroSubtitleEl = null;
@@ -1672,7 +1673,7 @@
     });
   }
 
-  // web/js/power.js
+  // js/power.js
   var shutdownModal = document.getElementById("shutdown-modal");
   var modalCancel = document.getElementById("modal-cancel");
   var modalConfirm = document.getElementById("modal-confirm");
@@ -1914,7 +1915,7 @@
     }
   }
 
-  // web/js/sunshine.js
+  // js/sunshine.js
   var sunshineBar = document.getElementById("sunshine-bar");
   var sunshineStatus = document.getElementById("sunshine-status");
   var sunshinePorts = document.getElementById("sunshine-ports");
@@ -2255,7 +2256,7 @@
     }, resetDelay);
   }
 
-  // web/js/history.js
+  // js/history.js
   var historyToggle = document.getElementById("history-toggle");
   var historyOverlay = document.getElementById("history-overlay");
   var historyClose = document.getElementById("history-close");
@@ -2321,7 +2322,7 @@
     if (historyOverlay) historyOverlay.style.display = "none";
   }
 
-  // web/js/charts.js
+  // js/charts.js
   function formatMetricValue(val, unit) {
     if (val === void 0 || val === null || isNaN(val)) return "\u2014";
     if (unit === "MB/s") {
@@ -2658,7 +2659,7 @@
     }
   }
 
-  // web/js/diagnostics.js
+  // js/diagnostics.js
   var diagnosticsToggle = document.getElementById("diagnostics-toggle");
   var diagnosticsOverlay = document.getElementById("diagnostics-overlay");
   var diagnosticsClose = document.getElementById("diagnostics-close");
@@ -4125,7 +4126,7 @@
     }
   }
 
-  // web/js/app.js
+  // js/app.js
   var statusRequestId = 0;
   var lastResumeTime = 0;
   async function checkStatus() {

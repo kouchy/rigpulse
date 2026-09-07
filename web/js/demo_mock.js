@@ -4,7 +4,7 @@
  * Provides 100% serverless simulation without modifying any backend code.
  */
 
-import { ENABLE_DEMO } from './demo.js';
+import { ENABLE_DEMO, DEMO_BAR } from './demo.js';
 import { state } from './state.js';
 
 const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
@@ -688,7 +688,7 @@ export async function handleDemoApi(action, opts = {}) {
 
 // Floating Demo Control Pill
 export function initDemoToolbar() {
-    if (!isDemoMode || document.getElementById('rigpulse-demo-bar') || hideToolbar) return;
+    if (!isDemoMode || !DEMO_BAR || document.getElementById('rigpulse-demo-bar') || hideToolbar) return;
 
     const bar = document.createElement('div');
     bar.id = 'rigpulse-demo-bar';
