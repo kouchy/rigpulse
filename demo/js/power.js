@@ -181,7 +181,7 @@ export async function doWOL() {
 
     const resetLabel = isWakeUp ? 'WAKE UP' : 'POWER ON';
     try {
-        const data = await apiFetch('wol', { method: 'POST' });
+        const data = await apiFetch('wol', { method: 'POST', body: JSON.stringify({ isWakeUp }) });
         state.sendingAction = null;
         if (data.success) {
             showMessage('✓ ' + data.message, 'success');

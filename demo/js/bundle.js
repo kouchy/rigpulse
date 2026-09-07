@@ -614,6 +614,13 @@
         return { success: true, message: "Host sleep initiated" };
       }
       case "wol": {
+        let wolBody = {};
+        try {
+          wolBody = typeof opts.body === "string" ? JSON.parse(opts.body) : opts.body || {};
+        } catch (e) {
+        }
+        const isWakeUp = !!wolBody.isWakeUp;
+        const wolDelay = isWakeUp ? 3e3 : 3e4;
         if (demoState.powerTimer) clearTimeout(demoState.powerTimer);
         demoState.online = false;
         demoState.sunshineReachable = false;
@@ -635,7 +642,7 @@
             if (window.updateDemoUI) window.updateDemoUI();
             window.dispatchEvent(new Event("focus"));
           }
-        }, 3e4);
+        }, wolDelay);
         return { success: true, message: `Magic packet sent to ${demoState.mac}` };
       }
       case "power": {
@@ -1825,7 +1832,7 @@
     showMessage(wolLabel, "info");
     const resetLabel = isWakeUp ? "WAKE UP" : "POWER ON";
     try {
-      const data = await apiFetch("wol", { method: "POST" });
+      const data = await apiFetch("wol", { method: "POST", body: JSON.stringify({ isWakeUp }) });
       state.sendingAction = null;
       if (data.success) {
         showMessage("\u2713 " + data.message, "success");

@@ -717,20 +717,7 @@
         <div class="diag-chart-tooltip" id="diag-chart-tooltip" style="display: none;"></div>
     </div>
 
-    <!-- Script loader: Standalone bundle for file:// protocol (bypasses CORS restrictions on ES modules), native ES module for http/https -->
-    <script>
-        (function() {
-            var isFile = window.location.protocol === 'file:';
-            var s = document.createElement('script');
-            if (isFile) {
-                s.src = 'js/bundle.js?v=34';
-            } else {
-                s.type = 'module';
-                s.src = 'js/app.js?v=34';
-            }
-            document.body.appendChild(s);
-        })();
-    </script>
+    <script type="module" src="js/app.js?v=34"></script>
 </body>
 
 </html>
