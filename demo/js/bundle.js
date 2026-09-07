@@ -1,6 +1,7 @@
 (() => {
   // docs/demo/js/demo.js
   var ENABLE_DEMO = true;
+  var DEMO_BAR = false;
 
   // docs/demo/js/config.js
   var defaultClientConfig = {
@@ -716,7 +717,7 @@
     }
   }
   function initDemoToolbar() {
-    if (!isDemoMode || document.getElementById("rigpulse-demo-bar") || hideToolbar) return;
+    if (!isDemoMode || !DEMO_BAR || document.getElementById("rigpulse-demo-bar") || hideToolbar) return;
     const bar = document.createElement("div");
     bar.id = "rigpulse-demo-bar";
     bar.innerHTML = `
